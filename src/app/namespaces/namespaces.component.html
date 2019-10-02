@@ -1,0 +1,48 @@
+<div class="input-field col s6">
+  <input id="nspace" type="text" class="validate" />
+  <label for="nspace">NameSpace Search</label>
+</div>
+<div class="valign-wrapper col s3">
+  <a
+    routerLink="/new"
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4"
+    style="margin-top:1rem;margin-bottom: 1rem;"
+  >
+    <i class="material-icons">add</i></a
+  >
+</div>
+<div class="valign-wrapper col s3">
+  <a
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4"
+    style="margin-top:1rem;margin-bottom: 1rem;"
+  >
+    <i class="material-icons">file_upload</i></a
+  >
+</div>
+        
+<div class="col s12">
+  <div class="progress" *ngIf="fetchingNameSpaces">
+    <div class="indeterminate"></div>
+  </div>
+</div>
+
+<table
+  class="table table-borderless"
+  *ngIf="loadedNameSpaces.length >= 1 && !fetchingNameSpaces"
+>
+  <tr *ngFor="let namespace of loadedNameSpaces">
+    <td>
+      <button class="btn-flat" (click)="loadSingleNS(namespace)">
+        {{ namespace }}
+      </button>
+    </td>
+    <td>
+      <button
+        class="waves-effect waves-teal btn-flat"
+        (click)="deleteNamespace(namespace)"
+      >
+        <i class="material-icons">delete</i>
+      </button>
+    </td>
+  </tr>
+</table>

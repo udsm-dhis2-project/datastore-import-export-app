@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col s6">
+    <p>{{ namespace }}</p>
+    <div class="divider"></div>
+
+    <table
+      class="table table-borderless"
+      *ngIf="loadedKeys.length >= 1 && !loadingKeys"
+    >
+      <tr *ngFor="let key of loadedKeys">
+        <td>
+          <button class="btn-flat" (click)="fetchValueObject(namespace, key)">
+            {{ key }}
+          </button>
+        </td>
+        <td>
+          <button class="waves-effect waves-teal btn-flat">
+            <i class="material-icons">delete</i>
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <div class="progress" *ngIf="loadingKeys">
+      <div class="indeterminate"></div>
+    </div>
+  </div>
+
+  <div class="col s6">
+    <p>Value</p>
+    <div class="divider"></div>
+    <div class="z-depth-2 value-editor #e0f2f1 teal lighten-5">
+        <div class="progress" *ngIf="loadingValue && !valueLoaded">
+            <div class="indeterminate"></div>
+          </div>
+      <ngx-json-viewer [json]="loadedValue" [expanded]="false" *ngIf = "!loadingValue && valueLoaded"></ngx-json-viewer>
+
+    </div>
+  </div>
+</div>

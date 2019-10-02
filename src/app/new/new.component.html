@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col s6">
+    <form
+    #NameSpaceForm="ngForm"
+    (ngSubmit)="addNewNameSpaceAndKey(NameSpaceForm.value)"
+    class="form-container">
+    <p ng-bind="namespace"><span>Namespace : </span>{{nsbind}}</p>
+
+    <div class="divider"></div>
+
+    <div class="input-field">
+      <input 
+      id="namespace" 
+      type="text" 
+      class="validate" 
+      required 
+      ngModel
+      [(ngModel)]="nsbind"
+      name="namespace"
+      #namespace="ngModel"/>
+      <label for="namespacef">Your Namespace</label>
+    </div>
+
+    <div class="input-field">
+      <input 
+      id="key" 
+      type="text" 
+      class="validate" 
+      required
+      ngModel
+      [(ngModel)]="kbind"
+      name = "key"
+      #key = "ngModel"
+      />
+      <label for="keyform">Your Key</label>
+    </div>
+
+    <div class="col s12">
+      <a class="waves-effect waves-light btn-small">generate key</a>
+    </div>
+
+    <br/><br/>
+
+      <div class="col s12">
+      <button type="submit" class="waves-effect waves-light btn-small" [disabled]="!NameSpaceForm.valid">
+          <i class="material-icons left">save</i>save
+      </button>
+    </div>
+
+      </form>
+  </div>
+
+
+  <div class="col s6">
+    <p><span>Key : </span>{{kbind}}</p>
+
+    <div class="divider"></div>
+
+    <form *ngIf = "!savingNsKey && savedNsKey">
+    <div class="input-field">
+      <textarea id="textarea1" class="materialize-textarea"></textarea>
+      <label for="textarea1">Textarea</label>
+    </div>
+
+    <a class="waves-effect waves-light btn-small">
+      <i class="material-icons left">save</i>save
+    </a>
+    </form>
+    <div class="progress" *ngIf="!savedNsKey && savingNsKey">
+      <div class="indeterminate"></div>
+    </div>
+
+  </div>
+</div>
