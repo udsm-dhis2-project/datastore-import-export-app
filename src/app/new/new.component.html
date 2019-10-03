@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col s6">
+  <div class="col s4">
     <form
     #NameSpaceForm="ngForm"
     (ngSubmit)="addNewNameSpaceAndKey(NameSpaceForm.value)"
@@ -7,6 +7,8 @@
     <p ng-bind="namespace"><span>Namespace : </span>{{nsbind}}</p>
 
     <div class="divider"></div>
+
+    
 
     <div class="input-field">
       <input 
@@ -47,11 +49,17 @@
       </button>
     </div>
 
+    <div *ngIf = "nsExists"class="col s12 alert-div #fafafa grey lighten-5">
+      <p class="red-text">Namespace Exists, change it before saving</p>
+    </div>
+
+   
+
       </form>
   </div>
 
 
-  <div class="col s6">
+  <div class="col s8">
     <p><span>Key : </span>{{kbind}}</p>
 
     <div class="divider"></div>

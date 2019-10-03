@@ -1,0 +1,5 @@
+<div class="progress" *ngIf="loadingValue && !valueLoaded">
+    <div class="indeterminate"></div>
+  </div>
+
+<ngx-json-viewer [json]="loadedValue" [expanded]="false" *ngIf = "!loadingValue && valueLoaded"></ngx-json-viewer>

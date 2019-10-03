@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { NameSpaceModule } from "./namespace.module";
+import { NgxDhis2HttpClientService } from '@iapps/ngx-dhis2-http-client';
 
 @Injectable({ providedIn: "root" })
 export class NameSpacesService {
@@ -12,19 +12,12 @@ export class NameSpacesService {
 
   delReqUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: NgxDhis2HttpClientService) {}
 
   fetchNameSpaces() {
-    this.authParam = btoa(this.username + ":" + this.password);
-    //console.log(this.authParam);
 
     return this.http
-      .get("/2.30/api/26/dataStore", {
-        headers: new HttpHeaders({
-          Authorization: "Basic " + this.authParam,
-          "Access-Control-Allow-Origin": "*"
-        })
-      })
+      .get("dataStore")
       .pipe(
         map(responceData => {
           const nameSpacesArray: NameSpaceModule[] = [];
@@ -44,13 +37,8 @@ export class NameSpacesService {
   }
 
   deleteNameSpace(name) {
-    this.delReqUrl = "/2.30/api/26/dataStore/" + name;
+    this.delReqUrl = "dataStore/" + name;
 
-    return this.http.delete(this.delReqUrl, {
-      headers: new HttpHeaders({
-        Authorization: "Basic " + this.authParam,
-        "Access-Control-Allow-Origin": "*"
-      })
-    });
+    return this.http.delete(this.delReqUrl);
   }
 }

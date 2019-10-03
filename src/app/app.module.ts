@@ -15,14 +15,21 @@ import { StoreModule } from "@ngrx/store";
 import { HomeComponent } from "./home/home.component";
 import {EventEmmiterService} from './event-emmiter.service';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { KeyComponent } from './key/key.component';
+import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 
-
+/*
 const appRoutes: Routes = [
-  { path: "", component: HomeComponent },
+  { path: "", redirectTo:"home", pathMatch:"full" },
   { path: "new", component: NewComponent },
-  { path: "namespace/:name", component: DashComponent },
-  { path: "namespace/:name/:key", component: DashComponent }
-];
+  { path: 'home', component: HomeComponent },
+  { path: "namespace/:name", component: DashComponent, children:[
+    { path: ":key", component: KeyComponent }
+  ]
+ 
+ },
+  
+];*/
 
 @NgModule({
   declarations: [
@@ -30,7 +37,8 @@ const appRoutes: Routes = [
     NamespacesComponent,
     NewComponent,
     DashComponent,
-    HomeComponent
+    HomeComponent,
+    KeyComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,14 @@ const appRoutes: Routes = [
     NgxJsonViewerModule,
     FormsModule,
     StoreModule.forRoot({}),
-    RouterModule.forRoot(appRoutes)
+    NgxDhis2HttpClientModule.forRoot({
+      namespace: 'iapps',
+      version: 1,
+      models: {
+ 
+      }
+    })
+   // RouterModule.forRoot(appRoutes)
   ],
   providers: [EventEmmiterService],
   bootstrap: [AppComponent]

@@ -1,7 +1,48 @@
 <div class="row">
-  <div class="col s6">
-    <p>{{ namespace }}</p>
+  <div class="col s4">
+    <p>
+      <span>Namespace : </span>
+      {{ namespace }}
+
+      <a
+        class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx">
+        <i class="material-icons">file_download</i>
+      </a>
+      <a
+        class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+        (click)="showKeyForm();">
+        <i class="material-icons">add</i>
+      </a>
+
+    </p>
+    
+
     <div class="divider"></div>
+
+    <form 
+    *ngIf="showForm"
+    #NewKeyForm="ngForm"
+    (ngSubmit)="addNewKey(namespace, NewKeyForm.value)"
+    >
+        <div class="input-field col s8">
+           <input 
+           id="email" 
+           type="text" 
+           class="validate" 
+           required
+           ngModel
+           name = "key"
+           #key = "ngModel">
+           <label for="email">Email</label>
+        </div>
+        <div class="col s4">
+            <button class="waves-effect waves-light btn" style="margin-top: 1rem" [disabled]="!NewKeyForm.valid">add key</button>
+        </div>
+    </form>
+
+    <div class="progress" *ngIf="deletingKey && !keyDeleted">
+      <div class="indeterminate"></div>
+    </div>
 
     <table
       class="table table-borderless"
@@ -14,26 +55,31 @@
           </button>
         </td>
         <td>
-          <button class="waves-effect waves-teal btn-flat">
+          <button class="waves-effect waves-teal btn-flat" (click)="deleteKey(namespace, key, loadedKeys.length)">
             <i class="material-icons">delete</i>
           </button>
         </td>
       </tr>
     </table>
 
+    <div *ngIf="loadedKeys.length === 1 && !loadingKeys" class="alert-div #fafafa grey lighten-5">
+      <p class="center-align red-text">Deleting the only key in the namespace will delete the namespace as well</p>
+    </div>
+
     <div class="progress" *ngIf="loadingKeys">
       <div class="indeterminate"></div>
     </div>
+
   </div>
 
-  <div class="col s6">
-    <p>Value</p>
+  <div class="col s8">
+    <p>
+      <span>Key : </span>
+      Value
+    </p>
     <div class="divider"></div>
     <div class="z-depth-2 value-editor #e0f2f1 teal lighten-5">
-        <div class="progress" *ngIf="loadingValue && !valueLoaded">
-            <div class="indeterminate"></div>
-          </div>
-      <ngx-json-viewer [json]="loadedValue" [expanded]="false" *ngIf = "!loadingValue && valueLoaded"></ngx-json-viewer>
+        <router-outlet></router-outlet>
 
     </div>
   </div>

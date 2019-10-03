@@ -18,3 +18,20 @@
   padding: 10px;
   background-color: white;
 }
+
+.btn-hidden{
+  display: none;
+}
+
+.t-row :hover .btn-hidden{
+  display: block;
+}
+
+.t-data:hover{
+ cursor: pointer; 
+}
+
+.mx{
+  margin-left: 2px;
+  margin-right: 2px;
+}

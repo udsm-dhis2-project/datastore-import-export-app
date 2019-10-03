@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NewService } from "./new.service";
 import { EventEmmiterService } from '../event-emmiter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -12,37 +13,42 @@ export class NewComponent implements OnInit {
   
   savingNsKey: boolean = false;
   savedNsKey: boolean = false;
+  nsExists: boolean = false;
 
   error = null;
 
-  constructor(private newService: NewService, private eventEmmiterService: EventEmmiterService) { }
+  constructor(private newService: NewService, private eventEmmiterService: EventEmmiterService, private router: Router) { }
 
   ngOnInit() {
   }
 
 
   addNewNameSpaceAndKey(NameKeyValues){
-    //check form values get to component logic
-    //console.log(NameKeyValues)
-    this.savingNsKey = true;
-    this.newService.addNameSpaceKey(NameKeyValues).subscribe(
-      responceData => {
-        console.log(responceData);
 
-
-        this.savingNsKey = false;
-        this.savedNsKey = true;
-
-        this.eventEmmiterService.onNameKeyAdded();
+    this.newService.namespaceExists(NameKeyValues.namespace).subscribe(
+      res => {
+        //namespace exists alert the user
+        //console.log("namespace exists");
+        this.nsExists = true;
 
       },
       error => {
-        this.error = error.message;
-      }
-    );
-    
+        
+        //namespace doesnt exist, proceed to post name-key-value
+        this.newService.addNameSpaceKey(NameKeyValues).subscribe(
+          response => {
+            this.eventEmmiterService.onNameKeyAdded();
+            this.router.navigate(['/namespace', NameKeyValues.namespace]);
 
-    
+
+          },
+          error => {
+
+          }
+        );
+
+      }
+    )
   }
 
 }

@@ -22,3 +22,8 @@
     min-height: 85vh;
     border: 0.5px solid teal;
 }
+
+*{
+    font-size: 0.8rem;
+}
+

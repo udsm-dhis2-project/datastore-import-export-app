@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~8.2.7",
     "@angular/router": "~8.2.7",
     "@ckeditor/ckeditor5-angular": "^1.1.0",
+    "@hisptz/ngx-dhis2-http-client": "^2.0.2",
+    "@iapps/ngx-dhis2-http-client": "^2.0.8-beta.3",
     "@ngrx/store": "^8.3.0",
     "jsoneditor": "^7.0.4",
     "ng-jsoneditor": "^1.0.0",

@@ -3,16 +3,23 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NewComponent } from './new/new.component';
 import { DashComponent } from './dash/dash.component';
+import { KeyComponent } from './key/key.component';
 
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
+  { path: "", redirectTo:"home", pathMatch:"full" },
   { path: "new", component: NewComponent },
-  { path: "namespace/:name", component: DashComponent }
+  { path: 'home', component: HomeComponent },
+  { path: "namespace/:name", component: DashComponent, children:[
+    { path: ":key", component: KeyComponent }
+  ]
+ 
+ },
+  
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

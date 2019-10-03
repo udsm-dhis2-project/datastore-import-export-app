@@ -1,33 +1,47 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { map } from "rxjs/operators";
-//import { NameSpaceModule } from "./namespace.module";
+import { NgxDhis2HttpClientService } from '@iapps/ngx-dhis2-http-client';
 
 @Injectable({ providedIn: "root" })
 export class DashService {
-  public username: string = "admin";
-  public password: string = "district";
 
-  public authParam;
 
   keysReqUrl: string;
 
   valueReqUrl: string;
 
-  constructor(private http: HttpClient) {}
+  delReqUrl: string;
 
-  fetchKeys(name) {
-    this.authParam = btoa(this.username + ":" + this.password);
-    this.keysReqUrl = '/2.30/api/26/dataStore/'+name;
+  addKeyReqUrl: string;
+
+  constructor(private http: NgxDhis2HttpClientService) {}
+
+  deleteKey(name: string, key: string){
+
+    this.delReqUrl = "dataStore/" + name + "/" + key;
+
+    return this.http.delete(this.delReqUrl);
+  }
+
+
+  addNewKey(name: string, key: string){
+
+    this.addKeyReqUrl = 'dataStore/' + name + '/' + key;
+    var myString = "{}";
+    var body = JSON.parse(myString);
+    
+    return this.http.post(this.addKeyReqUrl, body);
+  
+
+  }
+
+
+  fetchKeys(name: string) {
+    this.keysReqUrl = 'dataStore/'+name;
     //console.log(this.authParam);
 
     return this.http
-      .get(this.keysReqUrl, {
-        headers: new HttpHeaders({
-          Authorization: "Basic " + this.authParam,
-          "Access-Control-Allow-Origin": "*"
-        })
-      })
+      .get(this.keysReqUrl)
       .pipe(
         map(responceData => {
           const keysArray = [];
@@ -44,21 +58,6 @@ export class DashService {
           return keysArray;
         })
       );
-  }
-
-
-  fetchValue(name: string, key: string){
-
-    this.valueReqUrl = '/2.30/api/26/dataStore/' + name + '/' + key;
-
-    return this.http.get(this.valueReqUrl,
-      {
-        headers: new HttpHeaders({
-          Authorization: "Basic " + this.authParam,
-          "Access-Control-Allow-Origin": "*"
-        })
-      });
-
   }
 
 }
