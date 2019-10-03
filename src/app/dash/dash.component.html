@@ -59,7 +59,7 @@
       class="table table-borderless"
       *ngIf="loadedKeys.length >= 1 && !loadingKeys"
     >
-      <tr *ngFor="let key of loadedKeys">
+      <tr *ngFor="let key of loadedKeys | paginate: { itemsPerPage: 5, currentPage: pg }">
         <td>
           <button class="btn-flat" (click)="fetchValueObject(namespace, key)">
             {{ key }}
@@ -75,6 +75,8 @@
         </td>
       </tr>
     </table>
+
+    <pagination-controls (pageChange)="pg = $event"></pagination-controls>
 
     <div
       *ngIf="loadedKeys.length === 1 && !loadingKeys"

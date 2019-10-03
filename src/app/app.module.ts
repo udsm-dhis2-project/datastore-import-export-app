@@ -19,6 +19,7 @@ import { KeyComponent } from './key/key.component';
 import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 
 
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     FormsModule,
     NgxPaginationModule,
     AceEditorModule,
+    FilterPipeModule,
     StoreModule.forRoot({}),
     NgxDhis2HttpClientModule.forRoot({
       namespace: 'iapps',

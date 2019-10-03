@@ -9,6 +9,7 @@ import { EventEmmiterService } from '../event-emmiter.service';
   styleUrls: ["./dash.component.css"]
 })
 export class DashComponent implements OnInit {
+  pg: number = 1;
   key: string;
   namespace: string;
   loadedKeys = [];
