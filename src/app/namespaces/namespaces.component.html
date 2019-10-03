@@ -40,7 +40,7 @@
   class="table table-borderless"
   *ngIf="loadedNameSpaces.length >= 1 && !fetchingNameSpaces"
 >
-  <tr *ngFor="let namespace of loadedNameSpaces" class="t-row">
+  <tr *ngFor="let namespace of loadedNameSpaces | paginate: { itemsPerPage: 5, currentPage: p }" class="t-row">
     <td (click)="loadSingleNS(namespace)" class="t-data">
       <!--<button class="btn-flat" (click)="loadSingleNS(namespace)"> -->
         {{ namespace }}
@@ -56,3 +56,5 @@
     </td>
   </tr>
 </table>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>

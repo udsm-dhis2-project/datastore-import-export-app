@@ -1,5 +1,37 @@
+<p>
+  {{ key }}
+
+  <a
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+  >
+    <i class="material-icons">file_download</i>
+  </a>
+</p>
+
+<div class="divider"></div>
+
 <div class="progress" *ngIf="loadingValue && !valueLoaded">
-    <div class="indeterminate"></div>
+  <div class="indeterminate"></div>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <br />
+    <ace-editor
+      class="z-depth-1"
+      [(text)]="code"
+      mode="json"
+      style="height:60vh;"
+      *ngIf="!loadingValue && valueLoaded"
+    ></ace-editor>
   </div>
 
-<ngx-json-viewer [json]="loadedValue" [expanded]="false" *ngIf = "!loadingValue && valueLoaded"></ngx-json-viewer>
+  <!--<div class="col s12" style="height:60vh;" *ngIf="!valMode">
+    <ngx-json-viewer
+      class="editor z-depth-1"
+      [json]="loadedValue"
+      [expanded]="false"
+      *ngIf="!loadingValue && valueLoaded"
+    ></ngx-json-viewer>
+  </div>-->
+</div>

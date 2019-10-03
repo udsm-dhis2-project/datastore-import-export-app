@@ -17,6 +17,11 @@ import {EventEmmiterService} from './event-emmiter.service';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { KeyComponent } from './key/key.component';
 import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { AceEditorModule } from 'ng2-ace-editor';
+
+
+
 
 /*
 const appRoutes: Routes = [
@@ -46,6 +51,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     NgxJsonViewerModule,
     FormsModule,
+    NgxPaginationModule,
+    AceEditorModule,
     StoreModule.forRoot({}),
     NgxDhis2HttpClientModule.forRoot({
       namespace: 'iapps',

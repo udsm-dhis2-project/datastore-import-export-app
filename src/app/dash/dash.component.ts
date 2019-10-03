@@ -16,6 +16,7 @@ export class DashComponent implements OnInit {
   deletingKey: boolean = false;
   keyDeleted: boolean;
   showForm: boolean;
+  addingKey: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,10 +90,20 @@ export class DashComponent implements OnInit {
   }
 
   addNewKey(name, keyValue){
+
+    this.addingKey = true;
+    
     this.dashservice.addNewKey(name, keyValue.key).subscribe(
       res => {
+
+        this.addingKey = false;
+
         this.showKeyForm();
         this.fetchKeys(name);
+
+      },error => {
+
+        this.addingKey = false;
 
       }
     );

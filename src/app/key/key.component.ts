@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { KeyService } from "./key.service";
 import { ActivatedRoute, Params } from "@angular/router";
 
@@ -13,8 +13,11 @@ export class KeyComponent implements OnInit {
   loadingValue = false;
   valueLoaded = false;
   loadedValue = {};
+  valMode: boolean;
 
-  constructor(private keyService: KeyService, private route: ActivatedRoute) {}
+
+  constructor(private keyService: KeyService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     
@@ -44,4 +47,26 @@ export class KeyComponent implements OnInit {
       this.valueLoaded = true;
     });
   }
+
+  get code () {
+    return JSON.stringify(this.loadedValue, null, 2);
+  }
+
+  set code (v) {
+    try{
+      this.loadedValue = JSON.parse(v);
+    }
+    catch(e) {
+      console.log('error occored while you were typing the JSON');
+    };
+  }
+
+  setValMode(){
+    if(this.valMode){
+      this.valMode = false;
+    }else{
+      this.valMode = true;
+    }
+  }
+
 }

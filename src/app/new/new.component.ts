@@ -38,7 +38,7 @@ export class NewComponent implements OnInit {
         this.newService.addNameSpaceKey(NameKeyValues).subscribe(
           response => {
             this.eventEmmiterService.onNameKeyAdded();
-            this.router.navigate(['/namespace', NameKeyValues.namespace]);
+            this.router.navigate(['/namespace', NameKeyValues.namespace, NameKeyValues.key]);
 
 
           },

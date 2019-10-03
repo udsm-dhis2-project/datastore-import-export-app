@@ -12,6 +12,8 @@ import { EventEmmiterService } from '../event-emmiter.service';
 })
 export class NamespacesComponent implements OnInit {
 
+  p: number = 1;
+
   loadedNameSpaces:NameSpaceModule[] = [];
 
   fetchingNameSpaces: boolean = false;
