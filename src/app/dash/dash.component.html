@@ -60,10 +60,10 @@
       *ngIf="loadedKeys.length >= 1 && !loadingKeys"
     >
       <tr *ngFor="let key of loadedKeys | paginate: { itemsPerPage: 5, currentPage: pg }">
-        <td>
-          <button class="btn-flat" (click)="fetchValueObject(namespace, key)">
+        <td class="truncate" (click)="fetchValueObject(namespace, key)">
+          <!--<button class="btn-flat" (click)="fetchValueObject(namespace, key)">-->
             {{ key }}
-          </button>
+          <!-- </button> -->
         </td>
         <td>
           <button

@@ -9,6 +9,7 @@ import { EventEmmiterService } from '../event-emmiter.service';
   styleUrls: ["./dash.component.css"]
 })
 export class DashComponent implements OnInit {
+
   pg: number = 1;
   key: string;
   namespace: string;
@@ -49,6 +50,7 @@ export class DashComponent implements OnInit {
     this.dashservice.fetchKeys(name).subscribe(responseData => {
       this.loadedKeys = responseData;
       this.loadingKeys = false;
+      
     });
   }
 
