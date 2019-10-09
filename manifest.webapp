@@ -1,0 +1,27 @@
+{
+    "version": "1.0",
+    "name": "DataStore import/export",
+    "description": "My App is a Packaged App",
+    "launch_path": "/index.html",
+    "appType": "APP",
+    "icons": {
+        "16": "logo.png",
+        "48": "logo.png",
+        "128": "logo.png"
+    },
+    "developer": {
+        "name": "Me"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": "../../../",
+            "namespace": "jjsm-namespace"
+        }
+    },
+    "authorities": [
+         "MY_APP_ADD_NEW",
+         "MY_APP_UPDATE",
+         "MY_APP_DELETE"
+    ]
+}

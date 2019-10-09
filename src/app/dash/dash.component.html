@@ -6,6 +6,7 @@
 
       <a
         class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+        (click) = "jsonFileExpNS(namespace)"
       >
         <i class="material-icons">file_download</i>
       </a>
@@ -96,3 +97,5 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<a a id="downloadAnchorElem" style="display:none"></a>

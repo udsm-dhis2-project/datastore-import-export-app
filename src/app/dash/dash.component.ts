@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { DashService } from "./dash.service";
-import { EventEmmiterService } from '../event-emmiter.service';
+import { EventEmmiterService } from "../event-emmiter.service";
 
 @Component({
   selector: "app-dash",
@@ -9,7 +9,6 @@ import { EventEmmiterService } from '../event-emmiter.service';
   styleUrls: ["./dash.component.css"]
 })
 export class DashComponent implements OnInit {
-
   pg: number = 1;
   key: string;
   namespace: string;
@@ -19,6 +18,11 @@ export class DashComponent implements OnInit {
   keyDeleted: boolean;
   showForm: boolean;
   addingKey: boolean;
+  keysLength: number;
+  public keysList = [];
+  public valuesArray = [];
+  public keysLoadProgress = 0;
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -45,12 +49,58 @@ export class DashComponent implements OnInit {
     });
   }
 
+  jsonFileExpNS(name: string) {
+    var valuesObject = {};
+    var keyValObject = {};
+
+    this.dashservice.fetchKeys(name).subscribe(res => {
+      this.keysList = res;
+      valuesObject = {};
+      this.keysLoadProgress = 0;
+      console.log("clicked");
+
+      valuesObject[name] = {};
+
+      this.keysList.forEach(keyId => {
+        this.dashservice.getValue(name, keyId).subscribe(val =>{
+          
+          console.log("responce received");
+          this.keysLoadProgress ++
+
+          keyValObject[keyId] = val;
+
+          this.valuesArray.push(keyValObject);
+        
+
+          if(this.keysLoadProgress == this.keysList.length){
+            valuesObject[name] = keyValObject;
+            //console.log(this.keyValObject);
+            //console.log(this.valuesArray);
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(valuesObject));
+            var dlAnchorElem = document.getElementById('downloadAnchorElem');
+            dlAnchorElem.setAttribute("href",     dataStr     );
+            dlAnchorElem.setAttribute("download", "exp-ns-"+name+".json");
+            dlAnchorElem.click(); 
+
+            valuesObject = undefined;
+            keyValObject = undefined;
+
+          }
+
+        }
+
+        );
+      });
+    });
+  }
+
   fetchKeys(name: string) {
     this.loadingKeys = true;
     this.dashservice.fetchKeys(name).subscribe(responseData => {
       this.loadedKeys = responseData;
       this.loadingKeys = false;
-      
+    },error =>{
+      this.router.navigate(["/home"]);
     });
   }
 
@@ -68,9 +118,9 @@ export class DashComponent implements OnInit {
           this.deletingKey = false;
           this.keyDeleted = true;
 
-          if(keysNo > 1){
+          if (keysNo > 1) {
             this.fetchKeys(name);
-          }else{
+          } else {
             this.eventEmmiterService.onNameKeyAdded();
             this.router.navigate(["/"]);
           }
@@ -83,31 +133,26 @@ export class DashComponent implements OnInit {
     );
   }
 
-  showKeyForm(){
-    if(this.showForm){
+  showKeyForm() {
+    if (this.showForm) {
       this.showForm = false;
-    }else{
+    } else {
       this.showForm = true;
     }
-    
   }
 
-  addNewKey(name, keyValue){
-
+  addNewKey(name, keyValue) {
     this.addingKey = true;
-    
+
     this.dashservice.addNewKey(name, keyValue.key).subscribe(
       res => {
-
         this.addingKey = false;
 
         this.showKeyForm();
         this.fetchKeys(name);
-
-      },error => {
-
+      },
+      error => {
         this.addingKey = false;
-
       }
     );
   }
