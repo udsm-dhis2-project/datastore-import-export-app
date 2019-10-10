@@ -25,6 +25,7 @@
     "@ng-vcl/json-editor": "^0.4.0-12",
     "@ngrx/store": "^8.3.0",
     "ang-jsoneditor": "^1.8.3",
+    "big-json": "^3.0.0",
     "guid-typescript": "^1.0.9",
     "jsoneditor": "^7.0.4",
     "ng-jsoneditor": "^1.0.0",

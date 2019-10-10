@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NewService } from "./new.service";
 import { EventEmmiterService } from '../event-emmiter.service';
 import { Router } from '@angular/router';
-import { Guid } from "guid-typescript";
 
 @Component({
   selector: 'app-new',
@@ -11,12 +10,12 @@ import { Guid } from "guid-typescript";
 })
 export class NewComponent implements OnInit {
 
-  public id: Guid;
   idStr: string;
   
   savingNsKey: boolean = false;
   savedNsKey: boolean = false;
   nsExists: boolean = false;
+  generatingId: boolean = false;
 
   error = null;
 
@@ -26,10 +25,14 @@ export class NewComponent implements OnInit {
   }
 
   generateRID(){
+    this.generatingId = true;
+    this.newService.getUID().subscribe(
+      idJson => {
+        this.idStr = idJson.codes[0];
+        this.generatingId = false;
+      }
+    );
 
-    this.id = Guid.create();
-    //console.log(this.id['value']);
-    this.idStr = this.id['value'];
     
   }
 

@@ -64,7 +64,7 @@ export class DashComponent implements OnInit {
       this.keysList.forEach(keyId => {
         this.dashservice.getValue(name, keyId).subscribe(val =>{
           
-          console.log("responce received");
+          console.log(val);
           this.keysLoadProgress ++
 
           keyValObject[keyId] = val;
@@ -81,6 +81,8 @@ export class DashComponent implements OnInit {
             dlAnchorElem.setAttribute("href",     dataStr     );
             dlAnchorElem.setAttribute("download", "exp-ns-"+name+".json");
             dlAnchorElem.click(); 
+
+            console.log(dataStr);
 
             valuesObject = undefined;
             keyValObject = undefined;
