@@ -14,6 +14,8 @@ export class NamespacesComponent implements OnInit {
   loadedNameSpaces: NameSpaceModule[] = [];
   fetchingNameSpaces: boolean = false;
   error = null;
+  deletingNspace: boolean = false;
+  rname: string;
 
   constructor(
     private nameSpaces: NameSpacesService,
@@ -43,7 +45,8 @@ export class NamespacesComponent implements OnInit {
         this.loadedNameSpaces = fetchedNameSpaces;
         //console.log(this.loadedNameSpaces);
         this.fetchingNameSpaces = false;
-      },error => {
+      },
+      error => {
         this.error = error.message;
       }
     );
@@ -56,10 +59,12 @@ export class NamespacesComponent implements OnInit {
 
     if (delConfirmation == true) {
       //console.log(name);
+      this.deletingNspace = true;
       this.nameSpaces.deleteNameSpace(name).subscribe(responceData => {
         console.log(responceData);
-        this.router.navigate(["/"]);
+        this.deletingNspace = false;
         this.getNameSpaces();
+        this.router.navigate(["/"]);
       });
     }
   }

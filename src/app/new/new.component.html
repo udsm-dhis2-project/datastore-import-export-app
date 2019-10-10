@@ -9,6 +9,10 @@
 
       <div class="divider"></div>
 
+      <div class="progress" *ngIf="creatingNspace">
+        <div class="indeterminate"></div>
+      </div>
+
       <div class="input-field col s12">
         <input
           id="namespacef"
@@ -55,7 +59,7 @@
         <button
           type="submit"
           class="waves-effect waves-light btn-small"
-          [disabled]="!NameSpaceForm.valid && generatingId"
+          [disabled]="!NameSpaceForm.valid"
         >
           <i class="material-icons left">save</i>save
         </button>

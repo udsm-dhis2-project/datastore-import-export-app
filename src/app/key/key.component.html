@@ -1,14 +1,16 @@
-<p>
-  {{ key }}
 
-  <a
-    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
-  >
-    <i class="material-icons">file_download</i>
-  </a>
-</p>
+    <p>
+      {{ key }}
+ 
+    <button class="btn-flat mx" (click)="updateValue(key)">
+      &nbsp; <i class="material-icons">save</i> &nbsp;
+    </button>
+    </p>
 
 <div class="divider"></div>
+
+<span class="red-text" *ngIf="jsonError">The Json in invalid</span>
+<span class="green-text" *ngIf="updSuccess">value updated succesfully</span>
 
 <div class="progress" *ngIf="loadingValue && !valueLoaded">
   <div class="indeterminate"></div>
