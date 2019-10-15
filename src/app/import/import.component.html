@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col s12">
+    <p>Import</p>
+    <div class="divider"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s4">
+    <form>
+      <div class="file-field input-field">
+        <div class="btn btn-small">
+          <span>File</span>
+          <input type="file" (change)="onFileSelect($event.target)" [disabled]="loading"/>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" />
+        </div>
+      </div>
+    </form>
+    <div *ngIf = "loading">
+        <div class="progress">
+            <div class="determinate" [style.width]="importProgress + '%'"></div>
+        </div>
+        Importing namespace: {{namespacesArray[0]}} <br/>
+        {{importProgress}}% done
+
+    </div>
+    
+  </div>
+  <div class="col s8" *ngIf="failedKeyUpdates.length > 0 || failedKeyAdds.length > 0">
+    Failed Updates
+    <table>
+      <tr *ngFor="let failedKeyUpdate of failedKeyUpdates">
+        <td>{{failedKeyUpdate}}</td>
+      </tr>
+    </table>
+    Failed Value additions
+    <table>
+        <tr *ngFor="let failedKeyAdd of failedKeyAdds">
+          <td>{{failedKeyAdd}}</td>
+        </tr>
+      </table>
+  </div>
+</div>

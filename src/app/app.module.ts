@@ -20,22 +20,8 @@ import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { ImportComponent } from './import/import.component';
 
-
-
-
-/*
-const appRoutes: Routes = [
-  { path: "", redirectTo:"home", pathMatch:"full" },
-  { path: "new", component: NewComponent },
-  { path: 'home', component: HomeComponent },
-  { path: "namespace/:name", component: DashComponent, children:[
-    { path: ":key", component: KeyComponent }
-  ]
- 
- },
-  
-];*/
 
 @NgModule({
   declarations: [
@@ -44,7 +30,8 @@ const appRoutes: Routes = [
     NewComponent,
     DashComponent,
     HomeComponent,
-    KeyComponent
+    KeyComponent,
+    ImportComponent
   ],
   imports: [
     BrowserModule,

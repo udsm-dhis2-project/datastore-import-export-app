@@ -19,9 +19,12 @@ export class DashComponent implements OnInit {
   showForm: boolean;
   addingKey: boolean;
   keysLength: number;
+  public generatingKeys: boolean = false;
   public keysList = [];
   public valuesArray = [];
-  public keysLoadProgress = 0;
+  public keysLoadProgress: number;
+  public keysLoadPercent: number;
+  //namespaceArr = [];
   
 
   constructor(
@@ -41,31 +44,33 @@ export class DashComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.namespace = params["name"];
       this.fetchKeys(this.namespace);
-
       this.key = params["key"];
       if (this.key != null) {
         this.fetchValueObject(this.namespace, this.key);
       }
     });
   }
+ 
+
 
   jsonFileExpNS(name: string) {
     var valuesObject = {};
     var keyValObject = {};
+    this.generatingKeys = true;
 
     this.dashservice.fetchKeys(name).subscribe(res => {
       this.keysList = res;
       valuesObject = {};
       this.keysLoadProgress = 0;
-      console.log("clicked");
+      console.log(this.keysLoadProgress);
 
       valuesObject[name] = {};
 
       this.keysList.forEach(keyId => {
         this.dashservice.getValue(name, keyId).subscribe(val =>{
-          
-          console.log(val);
+
           this.keysLoadProgress ++
+          this.keysLoadPercent = (this.keysLoadProgress/ this.keysList.length) * 100
 
           keyValObject[keyId] = val;
 
@@ -74,18 +79,19 @@ export class DashComponent implements OnInit {
 
           if(this.keysLoadProgress == this.keysList.length){
             valuesObject[name] = keyValObject;
-            //console.log(this.keyValObject);
-            //console.log(this.valuesArray);
+;
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(valuesObject));
             var dlAnchorElem = document.getElementById('downloadAnchorElem');
             dlAnchorElem.setAttribute("href",     dataStr     );
             dlAnchorElem.setAttribute("download", "exp-ns-"+name+".json");
             dlAnchorElem.click(); 
 
-            console.log(dataStr);
+            this.generatingKeys = false;
 
             valuesObject = undefined;
             keyValObject = undefined;
+            this.keysLoadProgress = 0;
+            this.keysLoadPercent = 0;
 
           }
 
@@ -129,7 +135,6 @@ export class DashComponent implements OnInit {
         }
       },
       error => {
-        //console.log("error");
         this.deletingKey = false;
       }
     );
