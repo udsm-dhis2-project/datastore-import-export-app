@@ -31,6 +31,30 @@ export class ImportComponent implements OnInit {
 
         if (this.namespacesArray.length > 1) {
           //several n-s to import
+          this.namespacesArray.forEach(nameSpace => {
+            this.objectOfKeys = this.importedObj[nameSpace];
+            let keysArray = Object.keys(this.objectOfKeys);
+            
+            keysArray.forEach(key => {
+              this.importService.getkeyVal(nameSpace, key).subscribe(
+                data=>{
+                  this.importService.updatekeyVal(nameSpace, key, this.objectOfKeys).subscribe(
+                    responceData =>{
+
+                    });
+                },
+                err=>{
+                  this.importService.addkeyVal(nameSpace, key, this.objectOfKeys).subscribe(
+                    responceData =>{
+
+                    }
+                  )
+                }
+              )
+            });           
+            
+          });
+        
         } else {
           //just one n-s to import
           this.objectOfKeys = this.importedObj[this.namespacesArray[0]];
@@ -39,9 +63,6 @@ export class ImportComponent implements OnInit {
           this.loading = true;
 
           keysArray.forEach(key => {
-
-            
-
             this.importService.getkeyVal(this.namespacesArray[0], key).subscribe(
               res => {
                 

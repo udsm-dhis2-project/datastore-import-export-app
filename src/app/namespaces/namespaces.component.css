@@ -31,6 +31,11 @@
  cursor: pointer; 
 }
 
+.t-d{
+  padding: 4px !important;
+  margin: 4px !important
+}
+
 .mx{
   margin-left: 2px;
   margin-right: 2px;

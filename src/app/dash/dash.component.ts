@@ -79,7 +79,7 @@ export class DashComponent implements OnInit {
 
           if(this.keysLoadProgress == this.keysList.length){
             valuesObject[name] = keyValObject;
-;
+            
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(valuesObject));
             var dlAnchorElem = document.getElementById('downloadAnchorElem');
             dlAnchorElem.setAttribute("href",     dataStr     );

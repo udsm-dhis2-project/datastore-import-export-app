@@ -19,13 +19,13 @@
   <i class="material-icons">file_upload</i></a
 >
 
-<a
-  class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx tooltipped"
+<button
+  class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
   style="margin-top:1rem;margin-bottom: 1rem;"
-  data-position="bottom"
-  data-tooltip="I am a tooltip"
+  (click)="exportSelectedNS()"
+  [disabled]="nameSpacesToExport.length == 0"
 >
-  <i class="material-icons">file_download</i></a
+  <i class="material-icons">file_download</i></button
 >
 
 <div class="col s12">
@@ -33,6 +33,14 @@
     <div class="indeterminate"></div>
   </div>
 </div>
+
+<div class="col s12" *ngIf="loadingValsObj">
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+    Fething keys<br/>
+    {{valuesLoaded}} of {{numberOfKeys}} ready
+  </div>
 
 <table
   class="table table-borderless"
@@ -45,22 +53,27 @@
         | paginate: { id: 'ns', itemsPerPage: 5, currentPage: p }
     "
     class="t-row"
-    id = "{{namespace}}"
+    id="{{ namespace }}"
   >
-    <td style="padding: 0px">
-      <p style="padding: 0px">
-        <label style="padding: 0px">
-          <input type="checkbox" />
-          <span style="display: none"></span>
+    <td class="t-d">
+      <p>
+        <label>
+          <input type="checkbox" (click)="pushNS(namespace)"/>
+          <span
+            style="width: 0px;
+              padding-left:8px;
+              height: 15px;
+              line-height: 15px;"
+          ></span>
         </label>
       </p>
     </td>
-    <td (click)="loadSingleNS(namespace)" class="t-data">
+    <td (click)="loadSingleNS(namespace)" class="t-data t-d">
       <!--<button class="btn-flat" (click)="loadSingleNS(namespace)"> -->
       {{ namespace }}
       <!-- </button> -->
     </td>
-    <td>
+    <td class="t-d">
       <button
         class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 btn-hidden"
         (click)="deleteNamespace(namespace)"

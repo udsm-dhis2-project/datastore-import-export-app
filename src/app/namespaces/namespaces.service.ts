@@ -5,12 +5,10 @@ import { NgxDhis2HttpClientService } from '@iapps/ngx-dhis2-http-client';
 
 @Injectable({ providedIn: "root" })
 export class NameSpacesService {
-  public username: string = "admin";
-  public password: string = "district";
 
-  public authParam;
-
+  keysReqUrl: string;
   delReqUrl: string;
+  getValUrl: string;
 
   constructor(private http: NgxDhis2HttpClientService) {}
 
@@ -36,9 +34,22 @@ export class NameSpacesService {
       );
   }
 
-  deleteNameSpace(name) {
+  deleteNameSpace(name: string) {
     this.delReqUrl = "dataStore/" + name;
 
     return this.http.delete(this.delReqUrl);
+  }
+
+  getKeys(name: string){
+    this.keysReqUrl = "dataStore/"+ name;
+
+    return this.http.get(this.keysReqUrl);
+    
+  }
+
+  getValue(name: string, key: string){
+    this.getValUrl = "dataStore/"+name+"/"+key;
+
+    return this.http.get(this.getValUrl);
   }
 }

@@ -16,6 +16,11 @@ export class NamespacesComponent implements OnInit {
   error = null;
   deletingNspace: boolean = false;
   rname: string;
+  nameSpacesToExport = [];
+  namespacesObject = {};
+  numberOfKeys: number;
+  valuesLoaded: number;
+  loadingValsObj: boolean;
 
   constructor(
     private nameSpaces: NameSpacesService,
@@ -72,5 +77,60 @@ export class NamespacesComponent implements OnInit {
   loadSingleNS(name: string) {
     //console.log(name);
     this.router.navigate(["/namespace", name]);
+  }
+
+  pushNS(name: string) {
+    if (this.nameSpacesToExport.includes(name)) {
+      var nsIndex = this.nameSpacesToExport.indexOf(name);
+      this.nameSpacesToExport.splice(nsIndex, 1);
+      console.log(this.nameSpacesToExport);
+    } else {
+      this.nameSpacesToExport.push(name);
+      console.log(this.nameSpacesToExport);
+    }
+  }
+
+  exportSelectedNS() {
+    this.valuesLoaded = 0;
+    this.numberOfKeys = 0;
+    this.loadingValsObj = true;
+    this.namespacesObject = {};
+    this.nameSpacesToExport.forEach(name => {
+      this.namespacesObject[name] = {};
+
+      this.nameSpaces.getKeys(name).subscribe(
+        keys => {
+          this.numberOfKeys = this.numberOfKeys + keys.length;
+
+          keys.forEach(key => {
+            this.nameSpaces.getValue(name, key).subscribe(value => {
+              this.namespacesObject[name][key] = value;
+
+              this.valuesLoaded++;
+
+              console.log(
+                this.valuesLoaded + " / " + this.numberOfKeys + " loaded"
+              );
+
+              if (this.valuesLoaded == this.numberOfKeys) {
+                var dataStr =
+                  "data:text/json;charset=utf-8," +
+                  encodeURIComponent(JSON.stringify(this.namespacesObject));
+                var dlAnchorElem = document.getElementById(
+                  "downloadAnchorElem"
+                );
+                dlAnchorElem.setAttribute("href", dataStr);
+                dlAnchorElem.setAttribute("download", "exp-ns.json");
+                dlAnchorElem.click();
+
+                this.namespacesObject = undefined;
+                this.loadingValsObj = false;
+              }
+            });
+          });
+        },
+        error => {}
+      );
+    });
   }
 }
