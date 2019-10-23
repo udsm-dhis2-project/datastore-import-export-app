@@ -3,6 +3,8 @@
   <label for="nspace">NameSpace Search</label>
 </div>
 
+<div class="col s12" *ngIf = "!loadingValsObj">
+
 <a
   routerLink="/new"
   class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
@@ -28,6 +30,8 @@
   <i class="material-icons">file_download</i></button
 >
 
+</div>
+
 <div class="col s12">
   <div class="progress" *ngIf="fetchingNameSpaces || deletingNspace">
     <div class="indeterminate"></div>
@@ -38,8 +42,7 @@
     <div class="progress">
       <div class="indeterminate"></div>
     </div>
-    Fething keys<br/>
-    {{valuesLoaded}} of {{numberOfKeys}} ready
+    Generating Json: {{valuesLoaded}} of {{numberOfKeys}} keys
   </div>
 
 <table
@@ -75,7 +78,8 @@
     </td>
     <td class="t-d">
       <button
-        class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 btn-hidden"
+        class="waves-effect waves-white btn-flat grey-text text-lighten-3"
+        style="padding:4px;"
         (click)="deleteNamespace(namespace)"
       >
         <i class="material-icons">delete</i>
@@ -83,5 +87,7 @@
     </td>
   </tr>
 </table>
+
+<a id="downloadAnchorElem" style="display: none;"></a>
 
 <pagination-controls id="ns" (pageChange)="p = $event"></pagination-controls>

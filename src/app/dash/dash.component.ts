@@ -25,7 +25,6 @@ export class DashComponent implements OnInit {
   public keysLoadProgress: number;
   public keysLoadPercent: number;
   //namespaceArr = [];
-  
 
   constructor(
     private route: ActivatedRoute,
@@ -50,8 +49,6 @@ export class DashComponent implements OnInit {
       }
     });
   }
- 
-
 
   jsonFileExpNS(name: string) {
     var valuesObject = {};
@@ -67,24 +64,25 @@ export class DashComponent implements OnInit {
       valuesObject[name] = {};
 
       this.keysList.forEach(keyId => {
-        this.dashservice.getValue(name, keyId).subscribe(val =>{
-
-          this.keysLoadProgress ++
-          this.keysLoadPercent = (this.keysLoadProgress/ this.keysList.length) * 100
+        this.dashservice.getValue(name, keyId).subscribe(val => {
+          this.keysLoadProgress++;
+          this.keysLoadPercent =
+            (this.keysLoadProgress / this.keysList.length) * 100;
 
           keyValObject[keyId] = val;
 
           this.valuesArray.push(keyValObject);
-        
 
-          if(this.keysLoadProgress == this.keysList.length){
+          if (this.keysLoadProgress == this.keysList.length) {
             valuesObject[name] = keyValObject;
-            
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(valuesObject));
-            var dlAnchorElem = document.getElementById('downloadAnchorElem');
-            dlAnchorElem.setAttribute("href",     dataStr     );
-            dlAnchorElem.setAttribute("download", "exp-ns-"+name+".json");
-            dlAnchorElem.click(); 
+
+            var dataStr =
+              "data:text/json;charset=utf-8," +
+              encodeURIComponent(JSON.stringify(valuesObject));
+            var dlAnchorElem = document.getElementById("downloadAnchorElem");
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "exp-ns-" + name + ".json");
+            dlAnchorElem.click();
 
             this.generatingKeys = false;
 
@@ -92,24 +90,23 @@ export class DashComponent implements OnInit {
             keyValObject = undefined;
             this.keysLoadProgress = 0;
             this.keysLoadPercent = 0;
-
           }
-
-        }
-
-        );
+        });
       });
     });
   }
 
   fetchKeys(name: string) {
     this.loadingKeys = true;
-    this.dashservice.fetchKeys(name).subscribe(responseData => {
-      this.loadedKeys = responseData;
-      this.loadingKeys = false;
-    },error =>{
-      this.router.navigate(["/home"]);
-    });
+    this.dashservice.fetchKeys(name).subscribe(
+      responseData => {
+        this.loadedKeys = responseData;
+        this.loadingKeys = false;
+      },
+      error => {
+        this.router.navigate(["/home"]);
+      }
+    );
   }
 
   fetchValueObject(namespace: string, key: string) {
@@ -117,27 +114,33 @@ export class DashComponent implements OnInit {
   }
 
   deleteKey(name: string, key: string, keysNo: number) {
-    this.keyDeleted = false;
-    this.deletingKey = true;
-
-    this.dashservice.deleteKey(name, key).subscribe(
-      res => {
-        if (res["status"] === "OK") {
-          this.deletingKey = false;
-          this.keyDeleted = true;
-
-          if (keysNo > 1) {
-            this.fetchKeys(name);
-          } else {
-            this.eventEmmiterService.onNameKeyAdded();
-            this.router.navigate(["/"]);
-          }
-        }
-      },
-      error => {
-        this.deletingKey = false;
-      }
+    var delKeyConfirmation = confirm(
+      "Press OK to confirm you want to delete the key: " + key
     );
+
+    if (delKeyConfirmation) {
+      this.keyDeleted = false;
+      this.deletingKey = true;
+
+      this.dashservice.deleteKey(name, key).subscribe(
+        res => {
+          if (res["status"] === "OK") {
+            this.deletingKey = false;
+            this.keyDeleted = true;
+
+            if (keysNo > 1) {
+              this.fetchKeys(name);
+            } else {
+              this.eventEmmiterService.onNameKeyAdded();
+              this.router.navigate(["/"]);
+            }
+          }
+        },
+        error => {
+          this.deletingKey = false;
+        }
+      );
+    }
   }
 
   showKeyForm() {

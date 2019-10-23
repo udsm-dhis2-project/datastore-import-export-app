@@ -1,39 +1,29 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
 
 @Injectable({ providedIn: "root" })
 export class ImportService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: NgxDhis2HttpClientService) {}
 
   getkeyVal(name: string, key: string) {
-    return this.http.get("api/dataStore/" + name + "/" + key);
+    return this.http.get("dataStore/" + name + "/" + key);
   }
 
   updatekeyVal(name: string, key: string, body: any) {
     if (typeof body == "string") {
-      return this.http.put(
-        "api/dataStore/" + name + "/" + key,
-        '"' + body.toString() + '"',
-        {
-          headers: new HttpHeaders({
-            "Content-Type": "application/json"
-          })
-        }
-      );
-    }else{
-      return this.http.put("api/dataStore/" + name + "/" + key, body);
+      var jsonBody = JSON.parse('{"0":"' + body + '"}');
+      return this.http.put("dataStore/" + name + "/" + key, jsonBody);
+    } else {
+      return this.http.put("/dataStore/" + name + "/" + key, body);
     }
   }
 
   addkeyVal(name: string, key: string, body: any) {
     if (typeof body == "string") {
-    return this.http.post("api/dataStore/" + name + "/" + key, '"'+body.toString()+'"', {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
-    });
-  }else{
-    return this.http.post("api/dataStore/" + name + "/" + key, body);
-  }
+      var jsonBody = JSON.parse('{"0":"' + body + '"}');
+      return this.http.post("dataStore/" + name + "/" + key, jsonBody);
+    } else {
+      return this.http.post("dataStore/" + name + "/" + key, body);
+    }
   }
 }

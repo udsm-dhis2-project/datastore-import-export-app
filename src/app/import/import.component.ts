@@ -11,100 +11,120 @@ export class ImportComponent implements OnInit {
   importedObj = {};
   objectOfKeys = {};
   namespacesArray = [];
-  keysloaded: number;
-  namespaceloaded: number;
+  importingValues: boolean = false;
+  numberOfKeysFound: number;
+  numberOfNamesFound: number;
+  valuesImported: number;
   importProgress: number;
-  loading: boolean = false;
-  failedKeyUpdates = [];
-  failedKeyAdds = [];
+  importDone: boolean = false;
+  succesfulImportsArray: Array<string>;
+  failedImportsArray: Array<string>;
 
   constructor(private importService: ImportService) {}
 
   ngOnInit() {}
 
   onFileSelect(input: any) {
+    this.importProgress = 0;
+    this.importingValues = true;
+    this.valuesImported = 0;
+    this.importDone = false;
+    this.succesfulImportsArray = [];
+    this.failedImportsArray = [];
+
     if (input.files && input.files[0]) {
       var reader = new FileReader();
       reader.onload = (e: any) => {
         this.importedObj = JSON.parse(atob(e.target.result.slice(29)));
+
+        console.log(this.importedObj);
+
         this.namespacesArray = Object.keys(this.importedObj);
 
-        if (this.namespacesArray.length > 1) {
+        this.numberOfNamesFound = this.namespacesArray.length;
+
+        if (this.namespacesArray.length > 0) {
           //several n-s to import
+
+          this.numberOfKeysFound = 0;
+
           this.namespacesArray.forEach(nameSpace => {
             this.objectOfKeys = this.importedObj[nameSpace];
             let keysArray = Object.keys(this.objectOfKeys);
-            
+
+            this.numberOfKeysFound = this.numberOfKeysFound + keysArray.length;
+
             keysArray.forEach(key => {
               this.importService.getkeyVal(nameSpace, key).subscribe(
-                data=>{
-                  this.importService.updatekeyVal(nameSpace, key, this.objectOfKeys).subscribe(
-                    responceData =>{
+                data => {
+                  this.importService
+                    .updatekeyVal(
+                      nameSpace,
+                      key,
+                      this.importedObj[nameSpace][key]
+                    )
+                    .subscribe(
+                      responceData => {
+                        this.valuesImported++;
 
-                    });
+                        this.succesfulImportsArray.push(key);
+
+                        this.importProgress =
+                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+
+                        if (this.importProgress == 100) {
+                          this.importingValues = false;
+                          this.importDone = true;
+                        }
+                      },
+                      updateError => {
+                        this.failedImportsArray.push(key);
+                        this.valuesImported++;
+                        this.importProgress =
+                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+
+                        if (this.importProgress == 100) {
+                          this.importingValues = false;
+                          this.importDone = true;
+                        }
+                      }
+                    );
                 },
-                err=>{
-                  this.importService.addkeyVal(nameSpace, key, this.objectOfKeys).subscribe(
-                    responceData =>{
+                err => {
+                  this.importService
+                    .addkeyVal(nameSpace, key, this.importedObj[nameSpace][key])
+                    .subscribe(
+                      responceData => {
+                        this.valuesImported++;
 
-                    }
-                  )
+                        this.succesfulImportsArray.push(key);
+
+                        this.importProgress =
+                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+
+                        if (this.importProgress == 100) {
+                          this.importingValues = false;
+                          this.importDone = true;
+                        }
+                      },
+                      addErr => {
+                        this.failedImportsArray.push(key);
+                        this.valuesImported++;
+                        this.importProgress =
+                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+
+                        if (this.importProgress == 100) {
+                          this.importingValues = false;
+                          this.importDone = true;
+                        }
+                      }
+                    );
                 }
-              )
-            });           
-            
-          });
-        
-        } else {
-          //just one n-s to import
-          this.objectOfKeys = this.importedObj[this.namespacesArray[0]];
-          let keysArray = Object.keys(this.objectOfKeys);
-          this.keysloaded = 0;
-          this.loading = true;
-
-          keysArray.forEach(key => {
-            this.importService.getkeyVal(this.namespacesArray[0], key).subscribe(
-              res => {
-                
-                this.importService.updatekeyVal(this.namespacesArray[0], key, this.objectOfKeys[key]).subscribe(
-                  updtKeyRes => {
-                    this.keysloaded++
-                    this.importProgress = (this.keysloaded/ keysArray.length) * 100
-                    console.log(this.importProgress);
-                    if(this.importProgress == 100){this.loading = false};
-                    
-                  }, updtKeyErr =>{
-                    this.keysloaded++
-                    this.importProgress = (this.keysloaded/ keysArray.length) * 100
-                    this.failedKeyUpdates.push("key: "+ key+" on namespace: "+this.namespacesArray[0])
-                    console.log(this.importProgress);
-                    if(this.importProgress == 100){this.loading = false};             
-                  }
-                );
-
-              },err=>{
-                
-                this.importService.addkeyVal(this.namespacesArray[0], key, this.objectOfKeys[key]).subscribe(
-                  addKeyRes => {
-                    this.keysloaded++
-                    this.importProgress = (this.keysloaded/ keysArray.length) * 100
-                    console.log(this.importProgress);
-                    if(this.importProgress == 100){this.loading = false};
-
-                  },addKeyErr=>{
-                    this.keysloaded++
-                    this.importProgress = (this.keysloaded/ keysArray.length) * 100
-                    this.failedKeyAdds.push("key: "+ key+" on namespace: "+this.namespacesArray[0]);
-                    console.log(this.importProgress);
-                    if(this.importProgress == 100){this.loading = false};
-                  }
-                )
-              }
-            )
-            
-
+              );
+            });
           });
         }
+
       };
       reader.readAsDataURL(input.files[0]);
     }

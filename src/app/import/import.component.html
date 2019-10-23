@@ -11,35 +11,75 @@
       <div class="file-field input-field">
         <div class="btn btn-small">
           <span>File</span>
-          <input type="file" (change)="onFileSelect($event.target)" [disabled]="loading"/>
+          <input
+            type="file"
+            (change)="onFileSelect($event.target)"
+            [disabled]="importingValues"
+          />
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text" />
         </div>
       </div>
     </form>
-    <div *ngIf = "loading">
-        <div class="progress">
-            <div class="determinate" [style.width]="importProgress + '%'"></div>
-        </div>
-        Importing namespace: {{namespacesArray[0]}} <br/>
-        {{importProgress}}% done
-
-    </div>
-    
   </div>
-  <div class="col s8" *ngIf="failedKeyUpdates.length > 0 || failedKeyAdds.length > 0">
-    Failed Updates
+</div>
+
+<div class="row" *ngIf = "importingValues">
+  <div>
+    <p style="text-align: center;">Importing Values</p>
+    <div class="progress" style="width: 30rem;margin-left: auto;margin-right: auto;">
+      <div class="determinate" [style.width]="importProgress + '%'"></div>
+    </div>
+    <p style="text-align: center;">{{ importProgress }}%</p>
+  </div>
+</div>
+
+<div *ngIf="!importingValues && importDone" class="divider"></div>
+
+<div class="row" *ngIf="!importingValues && importDone">
+  <div class="col s3">
     <table>
-      <tr *ngFor="let failedKeyUpdate of failedKeyUpdates">
-        <td>{{failedKeyUpdate}}</td>
+      <tr><th>IMPORT SUMMARY</th></tr>
+      <tr>
+        <th>Namespaces found :</th>
+        <td>{{ numberOfNamesFound }}</td>
+      </tr>
+      <tr>
+        <th>Keys Found :</th>
+        <td>{{ numberOfKeysFound }}</td>
+      </tr>
+      <tr>
+        <th>Succesful Key Imports :</th>
+        <td>{{ succesfulImportsArray.length }}</td>
+      </tr>
+      <tr>
+        <th>Failed Key Imports :</th>
+        <td>{{ failedImportsArray.length }}</td>
       </tr>
     </table>
-    Failed Value additions
+  </div>
+  <div class="col s4" style="height:65vh;overflow: auto;">
     <table>
-        <tr *ngFor="let failedKeyAdd of failedKeyAdds">
-          <td>{{failedKeyAdd}}</td>
-        </tr>
-      </table>
+      <tr>
+        <th>
+          Succesful Key Imports:
+          {{ succesfulImportsArray.length }}
+        </th>
+      </tr>
+      <tr *ngFor="let importedKey of succesfulImportsArray">
+        <td>{{ importedKey }}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="col s4" style="height:65vh;overflow: auto;">
+    <table>
+      <tr>
+        <th>Failed Key Imports: {{ failedImportsArray.length }}</th>
+      </tr>
+      <tr *ngFor="let failedKey of failedImportsArray">
+        <td>{{ failedKey }}</td>
+      </tr>
+    </table>
   </div>
 </div>

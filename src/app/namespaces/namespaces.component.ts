@@ -20,7 +20,7 @@ export class NamespacesComponent implements OnInit {
   namespacesObject = {};
   numberOfKeys: number;
   valuesLoaded: number;
-  loadingValsObj: boolean;
+  loadingValsObj: boolean = false;
 
   constructor(
     private nameSpaces: NameSpacesService,
