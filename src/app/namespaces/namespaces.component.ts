@@ -1,26 +1,27 @@
-import { Component, OnInit } from "@angular/core";
-import { NameSpacesService } from "./namespaces.service";
-import { NameSpaceModule } from "./namespace.module";
-import { Router } from "@angular/router";
-import { EventEmmiterService } from "../event-emmiter.service";
+import { Component, OnInit } from '@angular/core';
+import { NameSpacesService } from './namespaces.service';
+import { NameSpaceModule } from './namespace.module';
+import { Router } from '@angular/router';
+import { EventEmmiterService } from '../event-emmiter.service';
 
 @Component({
-  selector: "app-namespaces",
-  templateUrl: "./namespaces.component.html",
-  styleUrls: ["./namespaces.component.css"]
+  selector: 'app-namespaces',
+  templateUrl: './namespaces.component.html',
+  styleUrls: ['./namespaces.component.css']
 })
 export class NamespacesComponent implements OnInit {
-  p: number = 1;
+  p = 1;
   loadedNameSpaces: NameSpaceModule[] = [];
-  fetchingNameSpaces: boolean = false;
+  fetchingNameSpaces = false;
   error = null;
-  deletingNspace: boolean = false;
+  deletingNspace = false;
   rname: string;
   nameSpacesToExport = [];
   namespacesObject = {};
   numberOfKeys: number;
   valuesLoaded: number;
-  loadingValsObj: boolean = false;
+  loadingValsObj = false;
+  namespace: any;
 
   constructor(
     private nameSpaces: NameSpacesService,
@@ -32,7 +33,7 @@ export class NamespacesComponent implements OnInit {
     if (this.eventEmmiterService.subsVar == undefined) {
       this.eventEmmiterService.subsVar = this.eventEmmiterService.reloadNamespaces.subscribe(
         (name: string) => {
-          //console.log(name);
+          // console.log(name);
           this.getNameSpaces();
         }
       );
@@ -41,14 +42,14 @@ export class NamespacesComponent implements OnInit {
     this.getNameSpaces();
   }
 
-  //outsorce namespaces' service function load and pipe name spaces
+  // outsorce namespaces' service function load and pipe name spaces
   getNameSpaces() {
     this.fetchingNameSpaces = true;
 
     this.nameSpaces.fetchNameSpaces().subscribe(
       fetchedNameSpaces => {
         this.loadedNameSpaces = fetchedNameSpaces;
-        //console.log(this.loadedNameSpaces);
+        // console.log(this.loadedNameSpaces);
         this.fetchingNameSpaces = false;
       },
       error => {
@@ -58,30 +59,30 @@ export class NamespacesComponent implements OnInit {
   }
 
   deleteNamespace(name: string) {
-    var delConfirmation = confirm(
-      "Press OK to confirm you want to delete the namespace: " + name
+    let delConfirmation = confirm(
+      'Press OK to confirm you want to delete the namespace: ' + name
     );
 
     if (delConfirmation == true) {
-      //console.log(name);
+      // console.log(name);
       this.deletingNspace = true;
       this.nameSpaces.deleteNameSpace(name).subscribe(responceData => {
         console.log(responceData);
         this.deletingNspace = false;
         this.getNameSpaces();
-        this.router.navigate(["/"]);
+        this.router.navigate(['/']);
       });
     }
   }
 
   loadSingleNS(name: string) {
-    //console.log(name);
-    this.router.navigate(["/namespace", name]);
+    // console.log(name);
+    this.router.navigate(['/namespace', name]);
   }
 
   pushNS(name: string) {
     if (this.nameSpacesToExport.includes(name)) {
-      var nsIndex = this.nameSpacesToExport.indexOf(name);
+      let nsIndex = this.nameSpacesToExport.indexOf(name);
       this.nameSpacesToExport.splice(nsIndex, 1);
       console.log(this.nameSpacesToExport);
     } else {
@@ -109,18 +110,18 @@ export class NamespacesComponent implements OnInit {
               this.valuesLoaded++;
 
               console.log(
-                this.valuesLoaded + " / " + this.numberOfKeys + " loaded"
+                this.valuesLoaded + ' / ' + this.numberOfKeys + ' loaded'
               );
 
               if (this.valuesLoaded == this.numberOfKeys) {
-                var dataStr =
-                  "data:text/json;charset=utf-8," +
+                let dataStr =
+                  'data:text/json;charset=utf-8,' +
                   encodeURIComponent(JSON.stringify(this.namespacesObject));
-                var dlAnchorElem = document.getElementById(
-                  "downloadAnchorElem"
+                let dlAnchorElem = document.getElementById(
+                  'downloadAnchorElem'
                 );
-                dlAnchorElem.setAttribute("href", dataStr);
-                dlAnchorElem.setAttribute("download", "exp-ns.json");
+                dlAnchorElem.setAttribute('href', dataStr);
+                dlAnchorElem.setAttribute('download', 'exp-ns.json');
                 dlAnchorElem.click();
 
                 this.namespacesObject = undefined;

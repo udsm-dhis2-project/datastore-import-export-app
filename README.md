@@ -1,6 +1,8 @@
 # DataStore Import Export App
 
 [![Build Status](https://travis-ci.org/hisptz/datastore-import-export-app.svg?branch=master)](https://travis-ci.org/hisptz/datastore-import-export-app)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9fa8f69239aa18d74fe7/maintainability)](https://codeclimate.com/github/hisptz/datastore-import-export-app/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9fa8f69239aa18d74fe7/test_coverage)](https://codeclimate.com/github/hisptz/datastore-import-export-app/test_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 Interactive datastore import export tool based on DHIS2 platform aim at extending import and export capabilities for datastore contents
