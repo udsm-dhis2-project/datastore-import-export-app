@@ -1,7 +1,7 @@
 # DataStore Import Export App
 
 [![Build Status](https://travis-ci.org/hisptz/datastore-import-export-app.svg?branch=master)](https://travis-ci.org/hisptz/datastore-import-export-app)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Greenkeeper badge](https://badges.greenkeeper.io/hisptz/datastore-import-export-app.svg)](https://greenkeeper.io/)
 
 Interactive datastore import export tool based on DHIS2 platform aim at extending import and export capabilities for datastore contents
 
