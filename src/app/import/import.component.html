@@ -25,10 +25,15 @@
   </div>
 </div>
 
-<div class="row" *ngIf = "importingValues">
+<app-error *ngIf="errorExists" [errorObj]="errorObj"></app-error>
+
+<div class="row" *ngIf="importingValues">
   <div>
     <p style="text-align: center;">Importing Values</p>
-    <div class="progress" style="width: 30rem;margin-left: auto;margin-right: auto;">
+    <div
+      class="progress"
+      style="width: 30rem;margin-left: auto;margin-right: auto;"
+    >
       <div class="determinate" [style.width]="importProgress + '%'"></div>
     </div>
     <p style="text-align: center;">{{ importProgress }}%</p>
@@ -40,7 +45,9 @@
 <div class="row" *ngIf="!importingValues && importDone">
   <div class="col s3">
     <table>
-      <tr><th>IMPORT SUMMARY</th></tr>
+      <tr>
+        <th>IMPORT SUMMARY</th>
+      </tr>
       <tr>
         <th>Namespaces found :</th>
         <td>{{ numberOfNamesFound }}</td>

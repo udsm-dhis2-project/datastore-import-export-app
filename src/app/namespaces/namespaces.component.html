@@ -3,35 +3,44 @@
   <label for="nspace">NameSpace Search</label>
 </div>
 
-<div class="col s12" *ngIf = "!loadingValsObj">
+<div class="col s12" *ngIf="!loadingValsObj">
+  <a
+    routerLink="/new"
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    style="margin-top:1rem;margin-bottom: 1rem;"
+    tooltip="New namespace"
+    placement="top"
+    show-delay="100"
+  >
+    <i class="material-icons">add</i></a
+  >
 
-<a
-  routerLink="/new"
-  class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
-  style="margin-top:1rem;margin-bottom: 1rem;"
->
-  <i class="material-icons">add</i></a
->
+  <a
+    routerLink="/import"
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    style="margin-top:1rem;margin-bottom: 1rem;"
+    tooltip="Import namespace(s)"
+    placement="top"
+    show-delay="100"
+  >
+    <i class="material-icons">file_upload</i></a
+  >
 
-<a
-  routerLink="/import"
-  class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
-  style="margin-top:1rem;margin-bottom: 1rem;"
->
-  <i class="material-icons">file_upload</i></a
->
-
-<button
-  class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
-  style="margin-top:1rem;margin-bottom: 1rem;"
-  (click)="exportSelectedNS()"
-  [disabled]="nameSpacesToExport.length == 0"
->
-  <i class="material-icons">file_download</i></button
->
-
+  <button
+    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    style="margin-top:1rem;margin-bottom: 1rem;"
+    (click)="exportSelectedNS()"
+    [disabled]="nameSpacesToExport.length == 0"
+    tooltip="Export namespaces"
+    placement="top"
+    show-delay="100"
+  >
+    <i class="material-icons">file_download</i>
+  </button>
 </div>
-
+<div class="col s12">
+  <app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
+</div>
 <div class="col s12">
   <div class="progress" *ngIf="fetchingNameSpaces || deletingNspace">
     <div class="indeterminate"></div>
@@ -39,11 +48,11 @@
 </div>
 
 <div class="col s12" *ngIf="loadingValsObj">
-    <div class="progress">
-      <div class="indeterminate"></div>
-    </div>
-    Generating Json: {{valuesLoaded}} of {{numberOfKeys}} keys
+  <div class="progress">
+    <div class="indeterminate"></div>
   </div>
+  Generating Json: {{ valuesLoaded }} of {{ numberOfKeys }} keys
+</div>
 
 <table
   class="table table-borderless"
@@ -61,7 +70,7 @@
     <td class="t-d">
       <p>
         <label>
-          <input type="checkbox" (click)="pushNS(namespace)"/>
+          <input type="checkbox" (click)="pushNS(namespace)" />
           <span
             style="width: 0px;
               padding-left:8px;

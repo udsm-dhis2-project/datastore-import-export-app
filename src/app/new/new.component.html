@@ -9,6 +9,8 @@
 
       <div class="divider"></div>
 
+      <app-error *ngIf="errorExists" [errorObj]="errorObj"></app-error>
+
       <div class="progress" *ngIf="creatingNspace">
         <div class="indeterminate"></div>
       </div>
@@ -34,7 +36,7 @@
           class="validate"
           required
           ngModel
-          [disabled] = "generatingId"
+          [disabled]="generatingId"
           [(ngModel)]="idStr"
           name="key"
           #key="ngModel"
@@ -48,7 +50,11 @@
       </div>
 
       <div class="col s12">
-        <button class="waves-effect waves-light btn-small" [disabled]="generatingId" (click)="generateRID()">
+        <button
+          class="waves-effect waves-light btn-small"
+          [disabled]="generatingId"
+          (click)="generateRID()"
+        >
           generate key
         </button>
       </div>

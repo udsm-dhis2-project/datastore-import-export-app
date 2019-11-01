@@ -10,12 +10,15 @@ import { Router } from "@angular/router";
 })
 export class NewComponent implements OnInit {
   idStr: string;
-
+  errorExists: boolean = false;
+  errorObj: {};
   savingNsKey: boolean = false;
   savedNsKey: boolean = false;
   nsExists: boolean = false;
   generatingId: boolean = false;
   creatingNspace: boolean = false;
+  nsbind: any;
+  kbind: any;
 
   error = null;
 
@@ -28,11 +31,19 @@ export class NewComponent implements OnInit {
   ngOnInit() {}
 
   generateRID() {
+    this.errorExists = false;
     this.generatingId = true;
-    this.newService.getUID().subscribe(idJson => {
-      this.idStr = idJson.codes[0];
-      this.generatingId = false;
-    });
+    this.newService.getUID().subscribe(
+      idJson => {
+        this.idStr = idJson.codes[0];
+        this.generatingId = false;
+      },
+      error => {
+        this.errorExists = true;
+        this.errorObj = error;
+        this.generatingId = false;
+      }
+    );
   }
 
   addNewNameSpaceAndKey(NameKeyValues) {
@@ -41,24 +52,33 @@ export class NewComponent implements OnInit {
     this.newService.namespaceExists(NameKeyValues.namespace).subscribe(
       res => {
         //namespace exists alert the user
-        //console.log("namespace exists");
         this.creatingNspace = false;
         this.nsExists = true;
       },
       error => {
-        //namespace doesnt exist, proceed to post name-key-value
-        this.newService.addNameSpaceKey(NameKeyValues).subscribe(
-          response => {
-            this.creatingNspace = false;
-            this.eventEmmiterService.onNameKeyAdded();
-            this.router.navigate([
-              "/namespace",
-              NameKeyValues.namespace,
-              NameKeyValues.key
-            ]);
-          },
-          error => {}
-        );
+        if (error.status == 404) {
+          //namespace doesnt exist, proceed to post name-key-value
+          this.newService.addNameSpaceKey(NameKeyValues).subscribe(
+            response => {
+              this.creatingNspace = false;
+              this.eventEmmiterService.onNameKeyAdded();
+              this.router.navigate([
+                "/namespace",
+                NameKeyValues.namespace,
+                NameKeyValues.key
+              ]);
+            },
+            error => {
+              this.creatingNspace = false;
+              this.errorExists = true;
+              this.errorObj = error;
+            }
+          );
+        } else {
+          this.creatingNspace = false;
+          this.errorExists = true;
+          this.errorObj = error;
+        }
       }
     );
   }
