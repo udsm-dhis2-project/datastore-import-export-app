@@ -1,19 +1,22 @@
-.value-editor{
-    margin: 8px;
-    padding: 8px;
-    min-height:70vh;
+.value-editor {
+  margin: 8px;
+  padding: 8px;
+  min-height: 70vh;
 }
 
-.alert-div{
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    margin: 8px;
-
+.alert-div {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 8px;
 }
 
-.mx{
-    margin-left: 2px;
-    margin-right: 2px;
+.mx {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.del-btn:hover {
+  color: #004d4d !important;
+  cursor: pointer;
 }

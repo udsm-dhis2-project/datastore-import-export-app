@@ -73,6 +73,7 @@ export class NamespacesComponent implements OnInit {
       this.nameSpaces.deleteNameSpace(name).subscribe(
         responceData => {
           console.log(responceData);
+          this.nameSpacesToExport = [];
           this.deletingNspace = false;
           this.getNameSpaces();
           this.router.navigate(["/"]);
