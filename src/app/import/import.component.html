@@ -42,7 +42,39 @@
 
 <div *ngIf="!importingValues && importDone" class="divider"></div>
 
-<div class="row" *ngIf="!importingValues && importDone">
+<div class="col s4" *ngIf="!importingValues && importDone">
+  <table>
+    <thead>
+      <th>Imported Namespaces</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let namespace of namespacesArray">
+        <td (click)="loadNamespace(namespace)" style="cursor: pointer;">
+          {{ namespace }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div
+  id="importSummary"
+  style="background-color:#fff; height: 80vh; width: 80vw; z-index: 999;position: absolute; top:10vh; right:10vw; padding-top: 10px;"
+  class="row z-depth-3"
+  *ngIf="!importingValues && importDone"
+>
+  <div class="row">
+    <button
+      class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx right"
+      style="margin-right: 15px"
+      (click)="closeSummary()"
+      tooltip="Close Summary"
+      placement="top"
+      show-delay="100"
+    >
+      <i class="material-icons">clear</i>
+    </button>
+  </div>
   <div class="col s3">
     <table>
       <tr>

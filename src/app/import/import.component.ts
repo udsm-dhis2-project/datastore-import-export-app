@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ImportService } from "./import.service";
+import { EventEmmiterService } from "../event-emmiter.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-import",
@@ -22,9 +24,22 @@ export class ImportComponent implements OnInit {
   succesfulImportsArray: Array<string>;
   failedImportsArray: Array<string>;
 
-  constructor(private importService: ImportService) {}
+  constructor(
+    private importService: ImportService,
+    private eventEmitterService: EventEmmiterService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
+
+  closeSummary() {
+    //clsoe summary + reload NS-list + navigate to last imported NS
+    document.getElementById("importSummary").style.display = "none";
+  }
+
+  loadNamespace(name: string) {
+    this.router.navigate(["/namespace", name]);
+  }
 
   onFileSelect(input: any) {
     this.errorExists = false;
@@ -78,6 +93,7 @@ export class ImportComponent implements OnInit {
                         if (this.importProgress == 100) {
                           this.importingValues = false;
                           this.importDone = true;
+                          this.eventEmitterService.onNameKeyAdded();
                         }
                       },
                       updateError => {
@@ -90,6 +106,7 @@ export class ImportComponent implements OnInit {
                         if (this.importProgress == 100) {
                           this.importingValues = false;
                           this.importDone = true;
+                          this.eventEmitterService.onNameKeyAdded();
                         }
                       }
                     );
@@ -116,6 +133,7 @@ export class ImportComponent implements OnInit {
                           if (this.importProgress == 100) {
                             this.importingValues = false;
                             this.importDone = true;
+                            this.eventEmitterService.onNameKeyAdded();
                           }
                         },
                         addErr => {
@@ -128,6 +146,7 @@ export class ImportComponent implements OnInit {
                           if (this.importProgress == 100) {
                             this.importingValues = false;
                             this.importDone = true;
+                            this.eventEmitterService.onNameKeyAdded();
                           }
                         }
                       );
