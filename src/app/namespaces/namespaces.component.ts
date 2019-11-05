@@ -1,28 +1,32 @@
-import { Component, OnInit } from "@angular/core";
-import { NameSpacesService } from "./namespaces.service";
-import { NameSpaceModule } from "./namespace.module";
-import { Router } from "@angular/router";
-import { EventEmmiterService } from "../event-emmiter.service";
+import { Component, OnInit } from '@angular/core';
+import { NameSpacesService } from './namespaces.service';
+import { NameSpaceModule } from './namespace.module';
+import { Router } from '@angular/router';
+import { EventEmmiterService } from '../event-emmiter.service';
 
 @Component({
-  selector: "app-namespaces",
-  templateUrl: "./namespaces.component.html",
-  styleUrls: ["./namespaces.component.css"]
+  selector: 'app-namespaces',
+  templateUrl: './namespaces.component.html',
+  styleUrls: ['./namespaces.component.css']
 })
 export class NamespacesComponent implements OnInit {
-  p: number = 1;
+  p = 1;
   loadedNameSpaces: NameSpaceModule[] = [];
-  fetchingNameSpaces: boolean = false;
+  fetchingNameSpaces = false;
   error = null;
+
   errorObj: {};
   errorExists: boolean = false;
   deletingNspace: boolean = false;
+
   rname: string;
   nameSpacesToExport = [];
   namespacesObject = {};
   numberOfKeys: number;
   valuesLoaded: number;
+
   loadingValsObj: boolean = false;
+
   namespace: any;
 
   constructor(
@@ -35,7 +39,7 @@ export class NamespacesComponent implements OnInit {
     if (this.eventEmmiterService.subsVar == undefined) {
       this.eventEmmiterService.subsVar = this.eventEmmiterService.reloadNamespaces.subscribe(
         (name: string) => {
-          //console.log(name);
+          // console.log(name);
           this.getNameSpaces();
         }
       );
@@ -44,7 +48,7 @@ export class NamespacesComponent implements OnInit {
     this.getNameSpaces();
   }
 
-  //outsorce namespaces' service function load and pipe name spaces
+  // outsorce namespaces' service function load and pipe name spaces
   getNameSpaces() {
     this.fetchingNameSpaces = true;
     this.errorExists = false;
@@ -52,6 +56,7 @@ export class NamespacesComponent implements OnInit {
     this.nameSpaces.fetchNameSpaces().subscribe(
       fetchedNameSpaces => {
         this.loadedNameSpaces = fetchedNameSpaces;
+
         this.fetchingNameSpaces = false;
       },
       error => {
@@ -63,13 +68,14 @@ export class NamespacesComponent implements OnInit {
   }
 
   deleteNamespace(name: string) {
-    var delConfirmation = confirm(
-      "Press OK to confirm you want to delete the namespace: " + name
+    let delConfirmation = confirm(
+      'Press OK to confirm you want to delete the namespace: ' + name
     );
 
     if (delConfirmation == true) {
-      //console.log(name);
+      // console.log(name);
       this.deletingNspace = true;
+
       this.nameSpaces.deleteNameSpace(name).subscribe(
         responceData => {
           console.log(responceData);
@@ -84,17 +90,18 @@ export class NamespacesComponent implements OnInit {
           this.deletingNspace = false;
         }
       );
+
     }
   }
 
   loadSingleNS(name: string) {
-    //console.log(name);
-    this.router.navigate(["/namespace", name]);
+    // console.log(name);
+    this.router.navigate(['/namespace', name]);
   }
 
   pushNS(name: string) {
     if (this.nameSpacesToExport.includes(name)) {
-      var nsIndex = this.nameSpacesToExport.indexOf(name);
+      let nsIndex = this.nameSpacesToExport.indexOf(name);
       this.nameSpacesToExport.splice(nsIndex, 1);
       console.log(this.nameSpacesToExport);
     } else {
@@ -117,6 +124,7 @@ export class NamespacesComponent implements OnInit {
           this.numberOfKeys = this.numberOfKeys + keys.length;
 
           keys.forEach(key => {
+
             this.nameSpaces.getValue(name, key).subscribe(
               value => {
                 this.namespacesObject[name][key] = value;
@@ -144,6 +152,7 @@ export class NamespacesComponent implements OnInit {
               error => {
                 this.errorExists = true;
                 this.errorObj = error;
+
                 this.loadingValsObj = false;
               }
             );

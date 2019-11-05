@@ -1,15 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { NewService } from "./new.service";
-import { EventEmmiterService } from "../event-emmiter.service";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { NewService } from './new.service';
+import { EventEmmiterService } from '../event-emmiter.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-new",
-  templateUrl: "./new.component.html",
-  styleUrls: ["./new.component.css"]
+  selector: 'app-new',
+  templateUrl: './new.component.html',
+  styleUrls: ['./new.component.css']
 })
 export class NewComponent implements OnInit {
   idStr: string;
+
   errorExists: boolean = false;
   errorObj: {};
   savingNsKey: boolean = false;
@@ -17,6 +18,7 @@ export class NewComponent implements OnInit {
   nsExists: boolean = false;
   generatingId: boolean = false;
   creatingNspace: boolean = false;
+
   nsbind: any;
   kbind: any;
 
@@ -51,11 +53,14 @@ export class NewComponent implements OnInit {
 
     this.newService.namespaceExists(NameKeyValues.namespace).subscribe(
       res => {
+
         //namespace exists alert the user
+
         this.creatingNspace = false;
         this.nsExists = true;
       },
       error => {
+
         if (error.status == 404) {
           //namespace doesnt exist, proceed to post name-key-value
           this.newService.addNameSpaceKey(NameKeyValues).subscribe(
@@ -79,6 +84,7 @@ export class NewComponent implements OnInit {
           this.errorExists = true;
           this.errorObj = error;
         }
+
       }
     );
   }
