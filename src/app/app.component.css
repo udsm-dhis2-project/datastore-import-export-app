@@ -1,29 +1,26 @@
-.row{
-    padding: 0px;
-    margin: 0px;
+.row {
+  padding: 0px;
+  margin: 0px;
 }
-.ds-ns-list{
-    border-right: 1px solid grey;
-    min-height: 90vh; 
-}
-
-.py{
-    padding-top: 8px;
-    padding-bottom: 8px;
-
+.ds-ns-list {
+  border-right: 1px solid grey;
+  min-height: 90vh;
 }
 
-.px{
-    padding-left: 8px;
-    padding-right: 8px;
+.py {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-.outlet{
-    min-height: 85vh;
-    border: 0.5px solid teal;
+.px {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
-*{
-    font-size: 0.8rem;
+.outlet {
+  min-height: 85vh;
 }
 
+* {
+  font-size: 0.8rem;
+}

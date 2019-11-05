@@ -1,16 +1,17 @@
+<p>
+  {{ key }}
 
-    <p>
-      {{ key }}
- 
-    <button class="btn-flat mx" (click)="updateValue(key)">
-      &nbsp; <i class="material-icons">save</i> &nbsp;
-    </button>
-    </p>
+  <button class="btn-flat mx" (click)="updateValue(key)">
+    &nbsp; <i class="material-icons">save</i> &nbsp;
+  </button>
+</p>
 
 <div class="divider"></div>
 
 <span class="red-text" *ngIf="jsonError">The Json in invalid</span>
 <span class="green-text" *ngIf="updSuccess">value updated succesfully</span>
+
+<app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
 
 <div class="progress" *ngIf="loadingValue && !valueLoaded">
   <div class="indeterminate"></div>

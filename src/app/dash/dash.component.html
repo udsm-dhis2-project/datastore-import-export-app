@@ -4,15 +4,22 @@
       <span>Namespace : </span>
       {{ namespace }}
 
-      <a
+      <button
         class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
         (click)="jsonFileExpNS(namespace)"
+        tooltip="Export namespace"
+        placement="top"
+        show-delay="100"
+        [disabled]="generatingKeys"
       >
         <i class="material-icons">file_download</i>
-      </a>
+      </button>
       <a
         class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
         (click)="showKeyForm()"
+        tooltip="Add new Key"
+        placement="top"
+        show-delay="100"
       >
         <i class="material-icons">add</i>
       </a>
@@ -20,7 +27,8 @@
 
     <div class="divider"></div>
     <div *ngIf="generatingKeys">
-      Generating {{ namespace }} json file.<br/> {{keysLoadProgress}} of {{keysList.length}} keys loaded.
+      Generating {{ namespace }} json file.<br />
+      {{ keysLoadProgress }} of {{ keysList.length }} keys loaded.
       <div class="progress">
         <div class="determinate" [style.width]="keysLoadPercent + '%'"></div>
       </div>
@@ -33,6 +41,8 @@
     <div class="progress" *ngIf="addingKey">
       <div class="indeterminate"></div>
     </div>
+
+    <app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
 
     <form
       *ngIf="showForm"
@@ -49,7 +59,7 @@
           name="key"
           #key="ngModel"
         />
-        <label for="email">Email</label>
+        <label for="email">Key</label>
       </div>
       <div class="col s4">
         <button
@@ -82,7 +92,7 @@
         </td>
         <td>
           <button
-            class="waves-effect waves-white btn-flat grey-text text-lighten-3"
+            class="waves-effect waves-white btn-flat grey-text text-lighten-3 del-btn"
             (click)="deleteKey(namespace, key, loadedKeys.length)"
           >
             <i class="material-icons">delete</i>

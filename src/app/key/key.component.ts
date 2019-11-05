@@ -10,8 +10,10 @@ import { ActivatedRoute, Params } from "@angular/router";
 export class KeyComponent implements OnInit {
   key: string;
   name: string = this.route.parent.snapshot.params["name"];
-  loadingValue = false;
-  valueLoaded = false;
+  loadingValue: boolean = false;
+  errorExists: boolean = false;
+  errorObj: {};
+  valueLoaded: boolean = false;
   loadedValue = {};
   valMode: boolean;
   jsonErrorMessage: string = "The JSON Object is invalid";
@@ -38,41 +40,48 @@ export class KeyComponent implements OnInit {
 
   updateValue(keyID: string) {
     this.loadingValue = true;
+    this.errorExists = false;
     this.valueLoaded = false;
+    console.log(typeof this.loadedValue);
+
     this.keyService.updateVal(this.name, keyID, this.loadedValue).subscribe(
       updRes => {
         this.updSuccess = true;
         this.loadingValue = false;
         this.valueLoaded = true;
         console.log(1);
-        setTimeout(
-          ()=>{
-            this.updSuccess = false;
-           // console.log(1)
-          },5000
-        );
+        setTimeout(() => {
+          this.updSuccess = false;
+          // console.log(1)
+        }, 5000);
       },
       errUpd => {
-        this.updFailed = true;
-        setInterval(function() {
-          this.updFailed = false;
-          this.loadingValue = false;
-          this.valueLoaded = true;
-        }, 5000);
+        this.errorExists = true;
+        this.errorObj = errUpd;
+        this.loadingValue = false;
+        this.valueLoaded = true;
       }
     );
   }
 
   fetchValueObject(name: string, key: string) {
+    this.errorExists = false;
     this.loadingValue = true;
     this.valueLoaded = false;
     //console.log(this.route.parent.snapshot.params['name']);
-    this.keyService.fetchValue(name, key).subscribe(responceData => {
-      this.loadedValue = responceData;
+    this.keyService.fetchValue(name, key).subscribe(
+      responceData => {
+        this.loadedValue = responceData;
 
-      this.loadingValue = false;
-      this.valueLoaded = true;
-    });
+        this.loadingValue = false;
+        this.valueLoaded = true;
+      },
+      error => {
+        this.errorExists = true;
+        this.errorObj = error;
+        this.loadingValue = false;
+      }
+    );
   }
 
   get code() {

@@ -15,6 +15,8 @@ export class DashComponent implements OnInit {
   loadedKeys = [];
   loadingKeys: boolean = false;
   deletingKey: boolean = false;
+  errorExists: boolean = false;
+  errorObj: {};
   keyDeleted: boolean;
   showForm: boolean;
   addingKey: boolean;
@@ -24,6 +26,8 @@ export class DashComponent implements OnInit {
   public valuesArray = [];
   public keysLoadProgress: number;
   public keysLoadPercent: number;
+  public errorMessage: string;
+  public errorCode: number;
   //namespaceArr = [];
 
   constructor(
@@ -54,49 +58,73 @@ export class DashComponent implements OnInit {
     var valuesObject = {};
     var keyValObject = {};
     this.generatingKeys = true;
+    this.errorExists = false;
 
-    this.dashservice.fetchKeys(name).subscribe(res => {
-      this.keysList = res;
-      valuesObject = {};
-      this.keysLoadProgress = 0;
-      console.log(this.keysLoadProgress);
+    this.dashservice.fetchKeys(name).subscribe(
+      res => {
+        this.keysList = res;
+        valuesObject = {};
+        this.keysLoadProgress = 0;
+        console.log(this.keysLoadProgress);
 
-      valuesObject[name] = {};
+        valuesObject[name] = {};
 
-      this.keysList.forEach(keyId => {
-        this.dashservice.getValue(name, keyId).subscribe(val => {
-          this.keysLoadProgress++;
-          this.keysLoadPercent =
-            (this.keysLoadProgress / this.keysList.length) * 100;
+        this.keysList.some(keyId => {
+          this.dashservice.getValue(name, keyId).subscribe(
+            val => {
+              this.keysLoadProgress++;
+              this.keysLoadPercent =
+                (this.keysLoadProgress / this.keysList.length) * 100;
 
-          keyValObject[keyId] = val;
+              keyValObject[keyId] = val;
 
-          this.valuesArray.push(keyValObject);
+              this.valuesArray.push(keyValObject);
 
-          if (this.keysLoadProgress == this.keysList.length) {
-            valuesObject[name] = keyValObject;
+              if (this.keysLoadProgress == this.keysList.length) {
+                valuesObject[name] = keyValObject;
 
-            var dataStr =
-              "data:text/json;charset=utf-8," +
-              encodeURIComponent(JSON.stringify(valuesObject));
-            var dlAnchorElem = document.getElementById("downloadAnchorElem");
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", "exp-ns-" + name + ".json");
-            dlAnchorElem.click();
+                var dataStr =
+                  "data:text/json;charset=utf-8," +
+                  encodeURIComponent(JSON.stringify(valuesObject));
+                var dlAnchorElem = document.getElementById(
+                  "downloadAnchorElem"
+                );
+                dlAnchorElem.setAttribute("href", dataStr);
+                dlAnchorElem.setAttribute(
+                  "download",
+                  "exp-ns-" + name + ".json"
+                );
+                dlAnchorElem.click();
 
-            this.generatingKeys = false;
+                this.generatingKeys = false;
 
-            valuesObject = undefined;
-            keyValObject = undefined;
-            this.keysLoadProgress = 0;
-            this.keysLoadPercent = 0;
-          }
+                valuesObject = undefined;
+                keyValObject = undefined;
+                this.keysLoadProgress = 0;
+                this.keysLoadPercent = 0;
+              }
+            },
+            error => {
+              this.generatingKeys = false;
+              this.errorExists = true;
+              this.errorObj = error;
+              return this.generatingKeys;
+            }
+          );
         });
-      });
-    });
+      },
+      error => {
+        this.generatingKeys = false;
+
+        this.errorExists = true;
+        this.errorObj = error;
+      }
+    );
   }
 
   fetchKeys(name: string) {
+    this.errorExists = false;
+    this.loadedKeys = [];
     this.loadingKeys = true;
     this.dashservice.fetchKeys(name).subscribe(
       responseData => {
@@ -104,7 +132,11 @@ export class DashComponent implements OnInit {
         this.loadingKeys = false;
       },
       error => {
-        this.router.navigate(["/home"]);
+        //this.router.navigate(["/home"]);
+        //console.log(error);
+        this.loadingKeys = false;
+        this.errorExists = true;
+        this.errorObj = error;
       }
     );
   }
@@ -114,6 +146,8 @@ export class DashComponent implements OnInit {
   }
 
   deleteKey(name: string, key: string, keysNo: number) {
+    this.errorExists = false;
+
     var delKeyConfirmation = confirm(
       "Press OK to confirm you want to delete the key: " + key
     );
@@ -138,6 +172,8 @@ export class DashComponent implements OnInit {
         },
         error => {
           this.deletingKey = false;
+          this.errorExists = true;
+          this.errorObj = error;
         }
       );
     }
@@ -153,6 +189,7 @@ export class DashComponent implements OnInit {
 
   addNewKey(name, keyValue) {
     this.addingKey = true;
+    this.errorExists = false;
 
     this.dashservice.addNewKey(name, keyValue.key).subscribe(
       res => {
@@ -163,6 +200,8 @@ export class DashComponent implements OnInit {
       },
       error => {
         this.addingKey = false;
+        this.errorExists = true;
+        this.errorObj = error;
       }
     );
   }

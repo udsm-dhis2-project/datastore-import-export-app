@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({ providedIn: "root" })
 export class ImportService {
-  constructor(private http: NgxDhis2HttpClientService) {}
+  constructor(private http: NgxDhis2HttpClientService, private httpn: HttpClient) {}
 
   getkeyVal(name: string, key: string) {
     return this.http.get("dataStore/" + name + "/" + key);
@@ -11,8 +13,13 @@ export class ImportService {
 
   updatekeyVal(name: string, key: string, body: any) {
     if (typeof body == "string") {
-      var jsonBody = JSON.parse('{"0":"' + body + '"}');
-      return this.http.put("dataStore/" + name + "/" + key, jsonBody);
+      var jsonBody = '\"'+body+'\"'
+      return this.httpn.put("../../../api/dataStore/" + name + "/" + key, jsonBody,
+      {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      });
     } else {
       return this.http.put("/dataStore/" + name + "/" + key, body);
     }
@@ -20,8 +27,13 @@ export class ImportService {
 
   addkeyVal(name: string, key: string, body: any) {
     if (typeof body == "string") {
-      var jsonBody = JSON.parse('{"0":"' + body + '"}');
-      return this.http.post("dataStore/" + name + "/" + key, jsonBody);
+      var jsonBody = '\"'+body+'\"'
+      return this.httpn.post("../../../api/dataStore/" + name + "/" + key, jsonBody,
+      {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      });
     } else {
       return this.http.post("dataStore/" + name + "/" + key, body);
     }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ImportService } from "./import.service";
+import { EventEmmiterService } from "../event-emmiter.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-import",
@@ -8,6 +10,8 @@ import { ImportService } from "./import.service";
 })
 export class ImportComponent implements OnInit {
   fileData = null;
+  errorExists: boolean = false;
+  errorObj: {};
   importedObj = {};
   objectOfKeys = {};
   namespacesArray = [];
@@ -20,11 +24,25 @@ export class ImportComponent implements OnInit {
   succesfulImportsArray: Array<string>;
   failedImportsArray: Array<string>;
 
-  constructor(private importService: ImportService) {}
+  constructor(
+    private importService: ImportService,
+    private eventEmitterService: EventEmmiterService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
+  closeSummary() {
+    //clsoe summary + reload NS-list + navigate to last imported NS
+    document.getElementById("importSummary").style.display = "none";
+  }
+
+  loadNamespace(name: string) {
+    this.router.navigate(["/namespace", name]);
+  }
+
   onFileSelect(input: any) {
+    this.errorExists = false;
     this.importProgress = 0;
     this.importingValues = true;
     this.valuesImported = 0;
@@ -44,8 +62,6 @@ export class ImportComponent implements OnInit {
         this.numberOfNamesFound = this.namespacesArray.length;
 
         if (this.namespacesArray.length > 0) {
-          //several n-s to import
-
           this.numberOfKeysFound = 0;
 
           this.namespacesArray.forEach(nameSpace => {
@@ -54,9 +70,10 @@ export class ImportComponent implements OnInit {
 
             this.numberOfKeysFound = this.numberOfKeysFound + keysArray.length;
 
-            keysArray.forEach(key => {
+            keysArray.some(key => {
               this.importService.getkeyVal(nameSpace, key).subscribe(
                 data => {
+                  //key exists -> update it
                   this.importService
                     .updatekeyVal(
                       nameSpace,
@@ -69,62 +86,82 @@ export class ImportComponent implements OnInit {
 
                         this.succesfulImportsArray.push(key);
 
-                        this.importProgress =
-                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+                        this.importProgress = Math.round(
+                          (this.valuesImported / this.numberOfKeysFound) * 100
+                        );
 
                         if (this.importProgress == 100) {
                           this.importingValues = false;
                           this.importDone = true;
+                          this.eventEmitterService.onNameKeyAdded();
                         }
                       },
                       updateError => {
                         this.failedImportsArray.push(key);
                         this.valuesImported++;
-                        this.importProgress =
-                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+                        this.importProgress = Math.round(
+                          (this.valuesImported / this.numberOfKeysFound) * 100
+                        );
 
                         if (this.importProgress == 100) {
                           this.importingValues = false;
                           this.importDone = true;
+                          this.eventEmitterService.onNameKeyAdded();
                         }
                       }
                     );
                 },
                 err => {
-                  this.importService
-                    .addkeyVal(nameSpace, key, this.importedObj[nameSpace][key])
-                    .subscribe(
-                      responceData => {
-                        this.valuesImported++;
+                  if (err.status == 404) {
+                    //key not found -> add key val
+                    this.importService
+                      .addkeyVal(
+                        nameSpace,
+                        key,
+                        this.importedObj[nameSpace][key]
+                      )
+                      .subscribe(
+                        responceData => {
+                          this.valuesImported++;
 
-                        this.succesfulImportsArray.push(key);
+                          this.succesfulImportsArray.push(key);
 
-                        this.importProgress =
-                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
+                          this.importProgress = Math.round(
+                            (this.valuesImported / this.numberOfKeysFound) * 100
+                          );
 
-                        if (this.importProgress == 100) {
-                          this.importingValues = false;
-                          this.importDone = true;
+                          if (this.importProgress == 100) {
+                            this.importingValues = false;
+                            this.importDone = true;
+                            this.eventEmitterService.onNameKeyAdded();
+                          }
+                        },
+                        addErr => {
+                          this.failedImportsArray.push(key);
+                          this.valuesImported++;
+                          this.importProgress = Math.round(
+                            (this.valuesImported / this.numberOfKeysFound) * 100
+                          );
+
+                          if (this.importProgress == 100) {
+                            this.importingValues = false;
+                            this.importDone = true;
+                            this.eventEmitterService.onNameKeyAdded();
+                          }
                         }
-                      },
-                      addErr => {
-                        this.failedImportsArray.push(key);
-                        this.valuesImported++;
-                        this.importProgress =
-                          Math.round((this.valuesImported / this.numberOfKeysFound) * 100);
-
-                        if (this.importProgress == 100) {
-                          this.importingValues = false;
-                          this.importDone = true;
-                        }
-                      }
-                    );
+                      );
+                  } else {
+                    //handle other type of errors
+                    this.errorExists = true;
+                    this.errorObj = err;
+                    this.importingValues = false;
+                    return this.importingValues;
+                  }
                 }
               );
             });
           });
         }
-
       };
       reader.readAsDataURL(input.files[0]);
     }

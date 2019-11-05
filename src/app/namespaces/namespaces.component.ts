@@ -14,13 +14,19 @@ export class NamespacesComponent implements OnInit {
   loadedNameSpaces: NameSpaceModule[] = [];
   fetchingNameSpaces = false;
   error = null;
-  deletingNspace = false;
+
+  errorObj: {};
+  errorExists: boolean = false;
+  deletingNspace: boolean = false;
+
   rname: string;
   nameSpacesToExport = [];
   namespacesObject = {};
   numberOfKeys: number;
   valuesLoaded: number;
-  loadingValsObj = false;
+
+  loadingValsObj: boolean = false;
+
   namespace: any;
 
   constructor(
@@ -45,15 +51,18 @@ export class NamespacesComponent implements OnInit {
   // outsorce namespaces' service function load and pipe name spaces
   getNameSpaces() {
     this.fetchingNameSpaces = true;
+    this.errorExists = false;
 
     this.nameSpaces.fetchNameSpaces().subscribe(
       fetchedNameSpaces => {
         this.loadedNameSpaces = fetchedNameSpaces;
-        // console.log(this.loadedNameSpaces);
+
         this.fetchingNameSpaces = false;
       },
       error => {
-        this.error = error.message;
+        this.errorObj = error;
+        this.errorExists = true;
+        this.fetchingNameSpaces = false;
       }
     );
   }
@@ -66,12 +75,22 @@ export class NamespacesComponent implements OnInit {
     if (delConfirmation == true) {
       // console.log(name);
       this.deletingNspace = true;
-      this.nameSpaces.deleteNameSpace(name).subscribe(responceData => {
-        console.log(responceData);
-        this.deletingNspace = false;
-        this.getNameSpaces();
-        this.router.navigate(['/']);
-      });
+
+      this.nameSpaces.deleteNameSpace(name).subscribe(
+        responceData => {
+          console.log(responceData);
+          this.nameSpacesToExport = [];
+          this.deletingNspace = false;
+          this.getNameSpaces();
+          this.router.navigate(["/"]);
+        },
+        error => {
+          this.errorObj = error;
+          this.errorExists = true;
+          this.deletingNspace = false;
+        }
+      );
+
     }
   }
 
@@ -92,6 +111,7 @@ export class NamespacesComponent implements OnInit {
   }
 
   exportSelectedNS() {
+    this.errorExists = false;
     this.valuesLoaded = 0;
     this.numberOfKeys = 0;
     this.loadingValsObj = true;
@@ -104,33 +124,45 @@ export class NamespacesComponent implements OnInit {
           this.numberOfKeys = this.numberOfKeys + keys.length;
 
           keys.forEach(key => {
-            this.nameSpaces.getValue(name, key).subscribe(value => {
-              this.namespacesObject[name][key] = value;
 
-              this.valuesLoaded++;
+            this.nameSpaces.getValue(name, key).subscribe(
+              value => {
+                this.namespacesObject[name][key] = value;
 
-              console.log(
-                this.valuesLoaded + ' / ' + this.numberOfKeys + ' loaded'
-              );
+                this.valuesLoaded++;
 
-              if (this.valuesLoaded == this.numberOfKeys) {
-                let dataStr =
-                  'data:text/json;charset=utf-8,' +
-                  encodeURIComponent(JSON.stringify(this.namespacesObject));
-                let dlAnchorElem = document.getElementById(
-                  'downloadAnchorElem'
-                );
-                dlAnchorElem.setAttribute('href', dataStr);
-                dlAnchorElem.setAttribute('download', 'exp-ns.json');
-                dlAnchorElem.click();
+                if (
+                  this.valuesLoaded == this.numberOfKeys &&
+                  !this.errorExists
+                ) {
+                  var dataStr =
+                    "data:text/json;charset=utf-8," +
+                    encodeURIComponent(JSON.stringify(this.namespacesObject));
+                  var dlAnchorElem = document.getElementById(
+                    "downloadAnchorElem"
+                  );
+                  dlAnchorElem.setAttribute("href", dataStr);
+                  dlAnchorElem.setAttribute("download", "exp-ns.json");
+                  dlAnchorElem.click();
 
-                this.namespacesObject = undefined;
+                  this.namespacesObject = undefined;
+                  this.loadingValsObj = false;
+                }
+              },
+              error => {
+                this.errorExists = true;
+                this.errorObj = error;
+
                 this.loadingValsObj = false;
               }
-            });
+            );
           });
         },
-        error => {}
+        error => {
+          this.errorExists = true;
+          this.errorObj = error;
+          this.loadingValsObj = false;
+        }
       );
     });
   }

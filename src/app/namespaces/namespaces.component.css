@@ -19,27 +19,32 @@
   background-color: white;
 }
 
-.btn-hidden{
+.btn-hidden {
   display: none;
 }
 
-.t-row :hover .btn-hidden{
+.t-row :hover .btn-hidden {
   display: block;
 }
 
-.t-data:hover{
- cursor: pointer; 
+.t-data:hover {
+  cursor: pointer;
 }
 
-.t-d{
+.t-d {
   padding: 4px !important;
-  margin: 4px !important
+  margin: 4px !important;
 }
 
-.mx{
+.mx {
   margin-left: 2px;
   margin-right: 2px;
 }
-.t-data{
+.t-data {
   padding-left: 8px;
+}
+
+.del-btn:hover {
+  color: #004d4d !important;
+  cursor: pointer;
 }
