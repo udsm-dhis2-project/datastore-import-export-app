@@ -63,6 +63,7 @@
     "
     class="t-row"
     id="{{ namespace }}"
+    routerLinkActive="active"
   >
     <td class="t-d">
       <p>
@@ -77,9 +78,9 @@
         </label>
       </p>
     </td>
-    <td (click)="loadSingleNS(namespace)" class="t-data t-d">
+    <td class="t-data t-d" (click)="loadSingleNS(namespace)">
       <!--<button class="btn-flat" (click)="loadSingleNS(namespace)"> -->
-      {{ namespace }}
+      <a [routerLink]="['/namespace', namespace]">{{ namespace }}</a>
       <!-- </button> -->
     </td>
     <td class="t-d">

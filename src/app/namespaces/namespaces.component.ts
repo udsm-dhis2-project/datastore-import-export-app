@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NameSpacesService } from "./namespaces.service";
 import { NameSpaceModule } from "./namespace.module";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { EventEmmiterService } from "../event-emmiter.service";
 
 @Component({
@@ -24,11 +24,13 @@ export class NamespacesComponent implements OnInit {
   valuesLoaded: number;
   loadingValsObj: boolean = false;
   namespace: any;
+  name: string;
 
   constructor(
     private nameSpaces: NameSpacesService,
     private router: Router,
-    private eventEmmiterService: EventEmmiterService
+    private eventEmmiterService: EventEmmiterService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {

@@ -80,6 +80,7 @@
         *ngFor="
           let key of loadedKeys | paginate: { itemsPerPage: 5, currentPage: pg }
         "
+        routerLinkActive="active"
       >
         <td
           class="truncate"
@@ -87,7 +88,7 @@
           style="cursor:pointer;"
         >
           <!--<button class="btn-flat" (click)="fetchValueObject(namespace, key)">-->
-          {{ key }}
+          <a [routerLink]="['/namespace', namespace, key]">{{ key }}</a>
           <!-- </button> -->
         </td>
         <td>

@@ -20,3 +20,10 @@
   color: #004d4d !important;
   cursor: pointer;
 }
+.active {
+  background-color: aliceblue;
+}
+
+a {
+  color: black !important;
+}
