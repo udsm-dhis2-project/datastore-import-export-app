@@ -1,12 +1,12 @@
 <div class="input-field col s12" style="margin: 0px;">
-  <input id="nspace" type="text" class="validate" [(ngModel)]="namespace" />
-  <label for="nspace">NameSpace Search</label>
+  <input id="nspace" type="text" [(ngModel)]="namespace" />
+  <label for="nspace" style="color: gray !important;">NameSpace Search</label>
 </div>
 
 <div class="col s12" *ngIf="!loadingValsObj">
   <a
     routerLink="/new"
-    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    class="btn-floating btn-small waves-effect waves-light #01579b light-blue darken-3 mx"
     tooltip="New namespace"
     placement="top"
     show-delay="100"
@@ -16,7 +16,7 @@
 
   <a
     routerLink="/import"
-    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    class="btn-floating btn-small waves-effect waves-light #01579b light-blue darken-3 mx"
     tooltip="Import namespace(s)"
     placement="top"
     show-delay="100"
@@ -25,7 +25,7 @@
   >
 
   <button
-    class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+    class="btn-floating btn-small waves-effect waves-light #01579b light-blue darken-3 mx"
     (click)="exportSelectedNS()"
     [disabled]="nameSpacesToExport.length == 0"
     tooltip="Export namespaces"
@@ -39,14 +39,17 @@
   <app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
 </div>
 <div class="col s12">
-  <div class="progress" *ngIf="fetchingNameSpaces || deletingNspace">
-    <div class="indeterminate"></div>
+  <div
+    class="progress #e3f2fd blue lighten-5"
+    *ngIf="fetchingNameSpaces || deletingNspace"
+  >
+    <div class="indeterminate #01579b light-blue darken-3"></div>
   </div>
 </div>
 
 <div class="col s12" *ngIf="loadingValsObj">
-  <div class="progress">
-    <div class="indeterminate"></div>
+  <div class="progress #e3f2fd blue lighten-5">
+    <div class="indeterminate #01579b light-blue darken-3"></div>
   </div>
   Generating Json: {{ valuesLoaded }} of {{ numberOfKeys }} keys
 </div>
@@ -70,6 +73,7 @@
         <label>
           <input type="checkbox" (click)="pushNS(namespace)" />
           <span
+            class="checkbox-class"
             style="width: 0px;
               padding-left:8px;
               height: 15px;

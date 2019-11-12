@@ -5,7 +5,7 @@
       {{ namespace }}
 
       <button
-        class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+        class="btn-floating btn-small waves-effect waves-light #01579b light-blue darken-3"
         (click)="jsonFileExpNS(namespace)"
         tooltip="Export namespace"
         placement="top"
@@ -14,8 +14,11 @@
       >
         <i class="material-icons">file_download</i>
       </button>
+
+      &nbsp;
+
       <a
-        class="btn-floating btn-small waves-effect waves-light #004d40 teal darken-4 mx"
+        class="btn-floating btn-small waves-effect waves-light #01579b light-blue darken-3"
         (click)="showKeyForm()"
         tooltip="Add new Key"
         placement="top"
@@ -29,17 +32,23 @@
     <div *ngIf="generatingKeys">
       Generating {{ namespace }} json file.<br />
       {{ keysLoadProgress }} of {{ keysList.length }} keys loaded.
-      <div class="progress">
-        <div class="determinate" [style.width]="keysLoadPercent + '%'"></div>
+      <div class="progress #e3f2fd blue lighten-5">
+        <div
+          class="determinate #01579b light-blue darken-3"
+          [style.width]="keysLoadPercent + '%'"
+        ></div>
       </div>
     </div>
 
-    <div class="progress" *ngIf="deletingKey && !keyDeleted">
-      <div class="indeterminate"></div>
+    <div
+      class="progress #e3f2fd blue lighten-5"
+      *ngIf="deletingKey && !keyDeleted"
+    >
+      <div class="indeterminate #01579b light-blue darken-3"></div>
     </div>
 
-    <div class="progress" *ngIf="addingKey">
-      <div class="indeterminate"></div>
+    <div class="progress #e3f2fd blue lighten-5" *ngIf="addingKey">
+      <div class="indeterminate #01579b light-blue darken-3"></div>
     </div>
 
     <app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
@@ -63,7 +72,7 @@
       </div>
       <div class="col s4">
         <button
-          class="waves-effect waves-light btn"
+          class="waves-effect waves-light btn #01579b light-blue darken-3"
           style="margin-top: 1rem"
           [disabled]="!NewKeyForm.valid"
         >
@@ -113,8 +122,8 @@
       </p>
     </div>
 
-    <div class="progress" *ngIf="loadingKeys">
-      <div class="indeterminate"></div>
+    <div class="progress #e3f2fd blue lighten-5" *ngIf="loadingKeys">
+      <div class="indeterminate #01579b light-blue darken-3"></div>
     </div>
   </div>
 
