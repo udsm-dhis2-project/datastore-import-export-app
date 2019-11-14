@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -22,6 +23,7 @@ import { AceEditorModule } from "ng2-ace-editor";
 import { FilterPipeModule } from "ngx-filter-pipe";
 import { ImportComponent } from "./import/import.component";
 import { ErrorComponent } from "./error/error.component";
+import { NgxDhis2MenuModule } from "@iapps/ngx-dhis2-menu";
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { ErrorComponent } from "./error/error.component";
     AceEditorModule,
     FilterPipeModule,
     TooltipModule,
+    BrowserAnimationsModule,
+    NgxDhis2MenuModule,
     StoreModule.forRoot({}),
     NgxDhis2HttpClientModule.forRoot({
       namespace: "iapps",

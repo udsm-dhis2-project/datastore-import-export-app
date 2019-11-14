@@ -1,7 +1,7 @@
 {
     "version": "1.0",
     "name": "DataStore import/export",
-    "description": "My App is a Packaged App",
+    "description": "DataStore import/export",
     "launch_path": "/index.html",
     "appType": "APP",
     "icons": {

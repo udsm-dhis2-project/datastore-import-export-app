@@ -13,8 +13,11 @@
 
 <app-error [errorObj]="errorObj" *ngIf="errorExists"></app-error>
 
-<div class="progress" *ngIf="loadingValue && !valueLoaded">
-  <div class="indeterminate"></div>
+<div
+  class="progress #e3f2fd blue lighten-5"
+  *ngIf="loadingValue && !valueLoaded"
+>
+  <div class="indeterminate #01579b light-blue darken-3"></div>
 </div>
 
 <div class="row">

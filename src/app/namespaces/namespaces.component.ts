@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { NameSpacesService } from './namespaces.service';
-import { NameSpaceModule } from './namespace.module';
-import { Router } from '@angular/router';
-import { EventEmmiterService } from '../event-emmiter.service';
+import { Component, OnInit } from "@angular/core";
+import { NameSpacesService } from "./namespaces.service";
+import { NameSpaceModule } from "./namespace.module";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { EventEmmiterService } from "../event-emmiter.service";
 
 @Component({
-  selector: 'app-namespaces',
-  templateUrl: './namespaces.component.html',
-  styleUrls: ['./namespaces.component.css']
+  selector: "app-namespaces",
+  templateUrl: "./namespaces.component.html",
+  styleUrls: ["./namespaces.component.css"]
 })
 export class NamespacesComponent implements OnInit {
   p = 1;
@@ -28,11 +28,13 @@ export class NamespacesComponent implements OnInit {
   loadingValsObj: boolean = false;
 
   namespace: any;
+  name: string;
 
   constructor(
     private nameSpaces: NameSpacesService,
     private router: Router,
-    private eventEmmiterService: EventEmmiterService
+    private eventEmmiterService: EventEmmiterService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class NamespacesComponent implements OnInit {
 
   deleteNamespace(name: string) {
     let delConfirmation = confirm(
-      'Press OK to confirm you want to delete the namespace: ' + name
+      "Press OK to confirm you want to delete the namespace: " + name
     );
 
     if (delConfirmation == true) {
@@ -90,13 +92,12 @@ export class NamespacesComponent implements OnInit {
           this.deletingNspace = false;
         }
       );
-
     }
   }
 
   loadSingleNS(name: string) {
     // console.log(name);
-    this.router.navigate(['/namespace', name]);
+    this.router.navigate(["/namespace", name]);
   }
 
   pushNS(name: string) {
@@ -124,7 +125,6 @@ export class NamespacesComponent implements OnInit {
           this.numberOfKeys = this.numberOfKeys + keys.length;
 
           keys.forEach(key => {
-
             this.nameSpaces.getValue(name, key).subscribe(
               value => {
                 this.namespacesObject[name][key] = value;
