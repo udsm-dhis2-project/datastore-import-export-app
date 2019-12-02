@@ -16,7 +16,7 @@
     "activities": {
         "dhis": {
             "href": "../../../",
-            "namespace": "jjsm-namespace"
+            "namespace": "sm-namespace"
         }
     },
     "authorities": [
