@@ -13,7 +13,7 @@ export class NameSpacesService {
 
   fetchNameSpaces() {
     return this.http.get("dataStore").pipe(
-      map(responceData => {
+      map((responceData) => {
         const nameSpacesArray: NameSpaceModule[] = [];
         //console.log(responceData);
 
@@ -46,5 +46,11 @@ export class NameSpacesService {
     this.getValUrl = "dataStore/" + name + "/" + key;
 
     return this.http.get(this.getValUrl);
+  }
+
+  getProgramData() {
+    let url = "programs/ib6PYHQ5Aa8.json?fields=programTrackedEntityAttributes[name,displayName,attributeValues,mandatory,renderOptionsAsRadio,sortOrder,valueType,trackedEntityAttribute[*,optionSet[options[code,name,id]]]]";
+
+    return this.http.get(url);
   }
 }
