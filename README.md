@@ -88,10 +88,23 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## How the app works:
 The app allows transfer of namespaces between two dhis2 instances, both installed with the datastore import/export app. A file containing the data in json format from one instance is imported into the second instance for creation of new namespaces and updating existing namespaces.
 
-![alt text](https://drive.google.com/file/d/1cDPl_wJyTDURJA7t80k2AUsSFSgbLrUo/view)
+![alt text](https://github.com/udsm-dhis2-lab/datastore-import-export-app/blob/develop/src/assets/process-diagram.png?raw=true)
 
 ## Ways to export.
 One way is to check desired namespaces on the left most column. Once one or more namespaces are checked. An export button will become active and once clicked a file will be downloaded.
 Another way is to click on the namespace on the left column. On the middle column above the list of keys an export button will be visible. Click on the button to download a json file with the namespace.
 To import the file click on the import button on the left most column above the list of namespaces. Select the file that exported another instance then import it to your instance.
+
+![alt text](https://github.com/udsm-dhis2-lab/datastore-import-export-app/blob/develop/src/assets/export-shot.png?raw=true)
+
+Figure 1: Exporting a namespace
+
+
+![alt text](https://github.com/udsm-dhis2-lab/datastore-import-export-app/blob/develop/src/assets/import-shot.png?raw=true)
+
+Figure 2: Importing namespaces from a file exported from another instance
+
+## Results:
+The Datastore import/export application has been used in implementation of Bottleneck Analysis, Scorecard, and customized program dashboard configurations in national HMIS, Multi-Sectoral Nutrition Information System and District Case Monitoring System in Tanzania during migration of metadata configurations from development/training instance to the live systems.
+
 
