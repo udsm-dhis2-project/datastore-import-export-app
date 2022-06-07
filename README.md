@@ -88,7 +88,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## How the app works:
 The app allows transfer of namespaces between two dhis2 instances, both installed with the datastore import/export app. A file containing the data in json format from one instance is imported into the second instance for creation of new namespaces and updating existing namespaces.
 
-![alt text](https://drive.google.com/file/d/1cDPl_wJyTDURJA7t80k2AUsSFSgbLrUo/view?usp=sharing)
+![alt text](https://drive.google.com/file/d/1cDPl_wJyTDURJA7t80k2AUsSFSgbLrUo/view)
 
 ## Ways to export.
 One way is to check desired namespaces on the left most column. Once one or more namespaces are checked. An export button will become active and once clicked a file will be downloaded.
