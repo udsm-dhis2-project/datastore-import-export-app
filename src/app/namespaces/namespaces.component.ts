@@ -7,7 +7,7 @@ import { EventEmmiterService } from "../event-emmiter.service";
 @Component({
   selector: "app-namespaces",
   templateUrl: "./namespaces.component.html",
-  styleUrls: ["./namespaces.component.css"]
+  styleUrls: ["./namespaces.component.css"],
 })
 export class NamespacesComponent implements OnInit {
   p = 1;
@@ -39,15 +39,39 @@ export class NamespacesComponent implements OnInit {
 
   ngOnInit() {
     if (this.eventEmmiterService.subsVar == undefined) {
-      this.eventEmmiterService.subsVar = this.eventEmmiterService.reloadNamespaces.subscribe(
-        (name: string) => {
+      this.eventEmmiterService.subsVar =
+        this.eventEmmiterService.reloadNamespaces.subscribe((name: string) => {
           // console.log(name);
           this.getNameSpaces();
-        }
-      );
+        });
     }
 
     this.getNameSpaces();
+
+    this.nameSpaces.getProgramData().subscribe((data) => {
+      console.log(data);
+
+      let marariaCaseRegistryAttributes =
+        data?.programTrackedEntityAttributes?.map((attr) => {
+          return {
+            renderOptionsAsRadio: attr?.renderOptionsAsRadio,
+            sortOrder: attr?.sortOrder,
+            mandatory: attr?.mandatory,
+            trackedEntityAttribute: {
+              id: attr?.trackedEntityAttribute?.id,
+              generated: attr?.trackedEntityAttribute?.generated,
+              displayName: attr?.displayName || attr?.name,
+              unique: attr?.trackedEntityAttribute?.unique,
+              valueType: attr?.trackedEntityAttribute?.valueType,
+              attributeValues: attr?.attributeValues,
+              optionSet: attr?.trackedEntityAttribute?.optionSet?.options,
+            },
+          };
+        });
+
+
+        console.log(JSON.stringify(marariaCaseRegistryAttributes));
+    });
   }
 
   // outsorce namespaces' service function load and pipe name spaces
@@ -56,12 +80,12 @@ export class NamespacesComponent implements OnInit {
     this.errorExists = false;
 
     this.nameSpaces.fetchNameSpaces().subscribe(
-      fetchedNameSpaces => {
+      (fetchedNameSpaces) => {
         this.loadedNameSpaces = fetchedNameSpaces;
 
         this.fetchingNameSpaces = false;
       },
-      error => {
+      (error) => {
         this.errorObj = error;
         this.errorExists = true;
         this.fetchingNameSpaces = false;
@@ -79,14 +103,14 @@ export class NamespacesComponent implements OnInit {
       this.deletingNspace = true;
 
       this.nameSpaces.deleteNameSpace(name).subscribe(
-        responceData => {
+        (responceData) => {
           console.log(responceData);
           this.nameSpacesToExport = [];
           this.deletingNspace = false;
           this.getNameSpaces();
           this.router.navigate(["/"]);
         },
-        error => {
+        (error) => {
           this.errorObj = error;
           this.errorExists = true;
           this.deletingNspace = false;
@@ -117,16 +141,16 @@ export class NamespacesComponent implements OnInit {
     this.numberOfKeys = 0;
     this.loadingValsObj = true;
     this.namespacesObject = {};
-    this.nameSpacesToExport.forEach(name => {
+    this.nameSpacesToExport.forEach((name) => {
       this.namespacesObject[name] = {};
 
       this.nameSpaces.getKeys(name).subscribe(
-        keys => {
+        (keys) => {
           this.numberOfKeys = this.numberOfKeys + keys.length;
 
-          keys.forEach(key => {
+          keys.forEach((key) => {
             this.nameSpaces.getValue(name, key).subscribe(
-              value => {
+              (value) => {
                 this.namespacesObject[name][key] = value;
 
                 this.valuesLoaded++;
@@ -138,9 +162,8 @@ export class NamespacesComponent implements OnInit {
                   var dataStr =
                     "data:text/json;charset=utf-8," +
                     encodeURIComponent(JSON.stringify(this.namespacesObject));
-                  var dlAnchorElem = document.getElementById(
-                    "downloadAnchorElem"
-                  );
+                  var dlAnchorElem =
+                    document.getElementById("downloadAnchorElem");
                   dlAnchorElem.setAttribute("href", dataStr);
                   dlAnchorElem.setAttribute("download", "exp-ns.json");
                   dlAnchorElem.click();
@@ -149,7 +172,7 @@ export class NamespacesComponent implements OnInit {
                   this.loadingValsObj = false;
                 }
               },
-              error => {
+              (error) => {
                 this.errorExists = true;
                 this.errorObj = error;
 
@@ -158,7 +181,7 @@ export class NamespacesComponent implements OnInit {
             );
           });
         },
-        error => {
+        (error) => {
           this.errorExists = true;
           this.errorObj = error;
           this.loadingValsObj = false;

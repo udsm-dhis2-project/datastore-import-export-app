@@ -5,9 +5,9 @@
     "launch_path": "/index.html",
     "appType": "APP",
     "icons": {
-        "16": "logo.png",
-        "48": "logo.png",
-        "128": "logo.png"
+        "16": "assets/logo.png",
+        "48": "assets/logo.png",
+        "128": "assets/logo.png"
     },
     "developer": {
         "name": "Me"
