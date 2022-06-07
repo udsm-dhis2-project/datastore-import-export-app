@@ -83,3 +83,15 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## How the app works:
+The app allows transfer of namespaces between two dhis2 instances, both installed with the datastore import/export app. A file containing the data in json format from one instance is imported into the second instance for creation of new namespaces and updating existing namespaces.
+
+![alt text](https://drive.google.com/file/d/1cDPl_wJyTDURJA7t80k2AUsSFSgbLrUo/view?usp=sharing)
+
+## Ways to export.
+One way is to check desired namespaces on the left most column. Once one or more namespaces are checked. An export button will become active and once clicked a file will be downloaded.
+Another way is to click on the namespace on the left column. On the middle column above the list of keys an export button will be visible. Click on the button to download a json file with the namespace.
+To import the file click on the import button on the left most column above the list of namespaces. Select the file that exported another instance then import it to your instance.
+
