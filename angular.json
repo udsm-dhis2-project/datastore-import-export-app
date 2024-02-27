@@ -108,6 +108,5 @@
         }
       }
     }
-  },
-  "defaultProject": "datastore-import-export"
+  }
 }
