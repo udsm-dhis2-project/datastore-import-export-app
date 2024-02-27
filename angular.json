@@ -67,19 +67,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "datastore-import-export:build",
-            "proxyConfig": "proxy-config.json"
+            "proxyConfig": "proxy-config.json",
+            "buildTarget": "datastore-import-export:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "datastore-import-export:build:production"
+              "buildTarget": "datastore-import-export:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "datastore-import-export:build"
+            "buildTarget": "datastore-import-export:build"
           }
         },
         "test": {
