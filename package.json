@@ -23,7 +23,7 @@
     "@iapps/ngx-dhis2-http-client": "^2.0.8-beta.3",
     "@iapps/ngx-dhis2-menu": "^1.0.11-beta.6",
     "@ng-vcl/json-editor": "^0.4.0-12",
-    "@ngrx/store": "^8.4.0",
+    "@ngrx/store": "^17.1.1",
     "ang-jsoneditor": "^1.8.4",
     "big-json": "^3.0.0",
     "guid-typescript": "^1.0.9",
