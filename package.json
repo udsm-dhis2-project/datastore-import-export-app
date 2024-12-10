@@ -28,7 +28,7 @@
     "ang-jsoneditor": "^1.8.4",
     "big-json": "^3.0.0",
     "guid-typescript": "^1.0.9",
-    "jsoneditor": "^7.2.1",
+    "jsoneditor": "^9.5.6",
     "ng-jsoneditor": "^1.0.0",
     "ng2-ace-editor": "^0.3.9",
     "ng2-json-editor": "^0.25.12",
