@@ -1,17 +1,16 @@
-import { Injectable, EventEmitter } from '@angular/core';    
-import { Subscription } from 'rxjs/internal/Subscription'; 
+import { Injectable, EventEmitter } from "@angular/core";
+import { Subscription } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class EventEmmiterService {
+  reloadNamespaces = new EventEmitter();
+  subsVar: Subscription;
 
-  reloadNamespaces = new EventEmitter();    
-  subsVar: Subscription;    
-    
-  constructor() { }    
-    
-  onNameKeyAdded() {    
-    this.reloadNamespaces.emit();    
-  }  
+  constructor() {}
+
+  onNameKeyAdded() {
+    this.reloadNamespaces.emit();
+  }
 }

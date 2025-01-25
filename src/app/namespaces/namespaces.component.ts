@@ -49,8 +49,6 @@ export class NamespacesComponent implements OnInit {
     this.getNameSpaces();
 
     this.nameSpaces.getProgramData().subscribe((data) => {
-      console.log(data);
-
       let marariaCaseRegistryAttributes =
         data?.programTrackedEntityAttributes?.map((attr) => {
           return {
@@ -68,9 +66,6 @@ export class NamespacesComponent implements OnInit {
             },
           };
         });
-
-
-        console.log(JSON.stringify(marariaCaseRegistryAttributes));
     });
   }
 
@@ -80,8 +75,9 @@ export class NamespacesComponent implements OnInit {
     this.errorExists = false;
 
     this.nameSpaces.fetchNameSpaces().subscribe(
-      (fetchedNameSpaces) => {
+      (fetchedNameSpaces: any) => {
         this.loadedNameSpaces = fetchedNameSpaces;
+        console.log(this.loadedNameSpaces);
 
         this.fetchingNameSpaces = false;
       },

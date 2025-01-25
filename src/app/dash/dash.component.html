@@ -87,15 +87,17 @@
     >
       <tr
         *ngFor="
-          let key of loadedKeys | paginate: { itemsPerPage: 5, currentPage: pg }
+          let key of loadedKeys
+            | paginate : { itemsPerPage: 5, currentPage: pg }
         "
         routerLinkActive="active"
       >
         <td
           class="truncate"
           (click)="fetchValueObject(namespace, key)"
-          style="cursor:pointer;"
+          style="cursor: pointer"
         >
+          {{ key | json }}
           <!--<button class="btn-flat" (click)="fetchValueObject(namespace, key)">-->
           <a [routerLink]="['/namespace', namespace, key]">{{ key }}</a>
           <!-- </button> -->
@@ -132,4 +134,4 @@
   </div>
 </div>
 
-<a a id="downloadAnchorElem" style="display:none"></a>
+<a a id="downloadAnchorElem" style="display: none"></a>

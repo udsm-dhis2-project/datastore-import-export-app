@@ -1,6 +1,6 @@
-<div class="input-field col s12" style="margin: 0px;">
+<div class="input-field col s12" style="margin: 0px">
   <input id="nspace" type="text" [(ngModel)]="namespace" />
-  <label for="nspace" style="color: gray !important;">NameSpace Search</label>
+  <label for="nspace" style="color: gray !important">NameSpace Search</label>
 </div>
 
 <div class="col s12" *ngIf="!loadingValsObj">
@@ -54,6 +54,8 @@
   Generating Json: {{ valuesLoaded }} of {{ numberOfKeys }} keys
 </div>
 
+<app-namespace-list></app-namespace-list>
+
 <table
   class="table table-borderless"
   *ngIf="loadedNameSpaces.length >= 1 && !fetchingNameSpaces"
@@ -61,8 +63,7 @@
   <tr
     *ngFor="
       let namespace of loadedNameSpaces
-        | filterBy: namespace
-        | paginate: { id: 'ns', itemsPerPage: 5, currentPage: p }
+        | paginate : { id: 'ns', itemsPerPage: 5, currentPage: p }
     "
     class="t-row"
     id="{{ namespace }}"
@@ -74,10 +75,12 @@
           <input type="checkbox" (click)="pushNS(namespace)" />
           <span
             class="checkbox-class"
-            style="width: 0px;
-              padding-left:8px;
+            style="
+              width: 0px;
+              padding-left: 8px;
               height: 15px;
-              line-height: 15px;"
+              line-height: 15px;
+            "
           ></span>
         </label>
       </p>
@@ -90,7 +93,7 @@
     <td class="t-d">
       <button
         class="waves-effect waves-white btn-flat grey-text text-lighten-3 del-btn"
-        style="padding:4px;"
+        style="padding: 4px"
         (click)="deleteNamespace(namespace)"
       >
         <i class="material-icons">delete</i>
@@ -99,6 +102,6 @@
   </tr>
 </table>
 
-<a id="downloadAnchorElem" style="display: none;"></a>
+<a id="downloadAnchorElem" style="display: none"></a>
 
 <pagination-controls id="ns" (pageChange)="p = $event"></pagination-controls>

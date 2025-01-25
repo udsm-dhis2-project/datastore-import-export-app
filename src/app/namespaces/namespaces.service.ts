@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators";
 import { NameSpaceModule } from "./namespace.module";
 import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
+import { HttpClient } from "@angular/common/http";
+import { map } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class NameSpacesService {
@@ -9,13 +10,15 @@ export class NameSpacesService {
   delReqUrl: string;
   getValUrl: string;
 
-  constructor(private http: NgxDhis2HttpClientService) {}
+  constructor(
+    private http: NgxDhis2HttpClientService,
+    private httpClient: HttpClient
+  ) {}
 
   fetchNameSpaces() {
-    return this.http.get("dataStore").pipe(
+    return this.httpClient.get("../../../api/dataStore").pipe(
       map((responceData) => {
         const nameSpacesArray: NameSpaceModule[] = [];
-        //console.log(responceData);
 
         for (const key in responceData) {
           //console.log('for parsed');
@@ -49,7 +52,8 @@ export class NameSpacesService {
   }
 
   getProgramData() {
-    let url = "programs/ib6PYHQ5Aa8.json?fields=programTrackedEntityAttributes[name,displayName,attributeValues,mandatory,renderOptionsAsRadio,sortOrder,valueType,trackedEntityAttribute[*,optionSet[options[code,name,id]]]]";
+    let url =
+      "programs/ib6PYHQ5Aa8.json?fields=programTrackedEntityAttributes[name,displayName,attributeValues,mandatory,renderOptionsAsRadio,sortOrder,valueType,trackedEntityAttribute[*,optionSet[options[code,name,id]]]]";
 
     return this.http.get(url);
   }
